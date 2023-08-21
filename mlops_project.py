@@ -1,11 +1,11 @@
 """Main module."""
+import logging
 import os
 import re
 
 import joblib
 import numpy as np
 import pandas as pd
-from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
@@ -13,7 +13,10 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from sklearn.model_selection import train_test_split
+
+from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
 from train.train_data import FraudDetectionPipeline, Retrieve_Files
+from utilities.logging import MyLogger
 
 # ZIP URL
 # IT's a big file!! ZIP (180Mb) CSV(480Mb)
@@ -73,10 +76,16 @@ SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
 
 
 if __name__ == "__main__":
+    # create logging file instance
+
+    logfile = MyLogger("Main_TEST", logging.DEBUG)
+
     # Change location to the refactored directory
-    print(os.getcwd())
+    # print(os.getcwd())
+    logfile.info(f"Current directory : {os.getcwd()}")
     os.chdir(REFACTORED_DIRECTORY)
     print(os.getcwd())
+    logfile.info(f"Refactored directory : {os.getcwd()}")
 
     # This class will retrieve ZIP file and extract csv
     retrieve_files = Retrieve_Files()
@@ -92,19 +101,22 @@ if __name__ == "__main__":
     )
 
     # Read data
+    logfile.debug(f"CSV file: {DATASETS_DIR + RETRIEVED_DATA}")
     df = pd.read_csv(DATASETS_DIR + RETRIEVED_DATA)
 
     # Split data
+    logfile.debug("Split dataset 80% Train / 20% Test")
+
     X_train, X_test, y_train, y_test = train_test_split(
         df.drop(TARGET, axis=1), df[TARGET], test_size=0.2, random_state=3
     )
 
     # Fit the model
-
+    logfile.debug("Model fitting Decision Tree")
     DecisionTreeModel = fraud_data_pipeline.fit_DecisionTree(X_train, y_train)
 
     result = joblib.dump(DecisionTreeModel, SAVE_PATH)
-    print(f"Model saved in {result}")
+    logfile.info(f"Model saved in {result}")
 
     # calculate metrics: roc-auc / accuracy /confusion matrix / classification_report  over the Test dataset
     X_test = fraud_data_pipeline.PIPELINE.fit_transform(X_test)
@@ -112,14 +124,15 @@ if __name__ == "__main__":
     proba_pred = DecisionTreeModel.predict_proba(X_test)[:, 1]
     print(f"test roc-auc : {roc_auc_score(y_test, proba_pred)}")
     #  test roc-auc : 0.9297945977633371
+    logfile.info(f"Testing model ROC-AUC:{roc_auc_score(y_test, proba_pred)}")
 
     print(f"test accuracy: {accuracy_score(y_test, class_pred)}")
+    logfile.info(f"Testing model accuracy: {accuracy_score(y_test, class_pred)}")
     #  test accuracy: 0.9996730906450487
 
     print(confusion_matrix(y_test, class_pred))
     # [[1270686     184]
     # [    232    1422]]
-
     print(classification_report(y_test, class_pred))
     #              precision    recall  f1-score   support
 
@@ -130,11 +143,18 @@ if __name__ == "__main__":
     #   macro avg       0.94      0.93      0.94   1272524
     # weighted avg       1.00      1.00      1.00   1272524
 
+    logfile.info("Confusion Matrix")
+    logfile.info(confusion_matrix(y_test, class_pred))
+
+    logfile.info("Classification Report")
+    print(classification_report(y_test, class_pred))
+
+    logfile.debug(f"Load Trained model from : {SAVE_PATH}")
+
     trained_model = joblib.load(filename=SAVE_PATH)
 
-    print("Load Trained model and test")
-
-    print("NO Fraud cases -- Expected [0's]")
+    logfile.debug("Test Trained model")
+    logfile.debug("NO Fraud cases -- Expected [0's]")
     # NO FRAUD CASES (0)
     test_data = np.array(
         [
@@ -148,10 +168,10 @@ if __name__ == "__main__":
             [2, 2625.76, 29786, 27160.24],
         ]
     ).astype(np.float32)
-    print(trained_model.predict(test_data, check_input=False))
+    logfile.debug(trained_model.predict(test_data, check_input=False))
 
     # FRAUD CASES (1)
-    print("Fraud cases -- Expected [1's]")
+    logfile.debug("Fraud cases -- Expected [1's]")
     test_data = np.array(
         [
             [4, 10000000, 12930418.44, 2930418.44],
@@ -163,4 +183,4 @@ if __name__ == "__main__":
             [1, 132842.64, 4499.08, 0],
         ]
     ).astype(np.float32)
-    print(trained_model.predict(test_data, check_input=False))
+    logfile.debug(trained_model.predict(test_data, check_input=False))
