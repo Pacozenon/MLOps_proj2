@@ -87,46 +87,29 @@ This session talks about one of the most important practices to be able to climb
     * Activate the virtual environment
         ```
         Linux:
-        source venv310/bin/activate
-        
+              source venv310/bin/activate
         Windows:
-            ./venv310/scripts/activate.ps1
+              ./venv310/scripts/activate.ps1
+        ```
+2. Make sure you are on the root folder
 
-        ```
-2. Change to the refactored folder 
-        ```
         Windows
-        cd /Refactor/mlops_project/mlops_project
-
-        ```
+        ./mlops_proj2/
+       
 ## Install all requerimients files
 
-We have 3 requirement files
+* General, API & PyTest packages 
 
-* General packages for main program
-        ```
-        git install -r ../requirements-310.txt
-
-        ```
-* API packages
-        ```
-        git install -r ./requirements_api.txt
-
-        ```
-* PyTest packages
-        ```
-        git install -r ./requirements_dev.txt
-
-        ```
+        pip install -r requirements.txt
 
 ## Usage
 
-1. Change the directory to `Refactor/mlops_project/mlops_project`.
+1. Change to root directory.
 2. Run `python mlops_project.py` in the terminal.
 
 ## Test API
 
-1. Change the directory to `Refactor/mlops_project/mlops_project`.
+1. Change to root directory.
 2. Run `uvicorn api.main:app --reload` in the terminal.
 
 ## Checking endpoints
@@ -137,7 +120,7 @@ We have 3 requirement files
 
 3. Try running the classify endpoint by providing some data:
 	
-    **Request body** FRAUD CASES
+    **Request body : FRAUD CASES** 
     ```bash
     {
     "type": 4, 
@@ -147,7 +130,7 @@ We have 3 requirement files
     }
     ```
     
-    **Request body** NO FRAUD CASES
+    **Request body : NO FRAUD CASES** 
     ```bash
     {
     "type": 3, 

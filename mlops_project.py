@@ -26,7 +26,7 @@ ZIPURL = "https://www.googleapis.com/drive/v3/files/1_rd4Jy9bbpjCyl92zqBor5bKQgD
 CSVFILE = "PS_20174392719_1491204439457_log.csv"
 
 # refactored folder
-REFACTORED_DIRECTORY = "/Users/francisco.torres/Documents/GitHub/MLOps_project/Refactor/mlops_project/mlops_project"
+REFACTORED_DIRECTORY = "/Users/francisco.torres/Documents/GitHub/MLOps_proj2"
 DATASETS_DIR = "./data/"  # Directory where data will be unzip.
 
 RETRIEVED_DATA = (
