@@ -67,7 +67,7 @@ class Retrieve_Files:
 
         # if we already have the retrieved file, skip this section
         if not os.path.isfile(DATASETS_DIR + RETRIEVED_DATA):
-            data_retrieve = DataRetriever(DATASETS_DIR + RETRIEVED_DATA)
+            data_retrieve = DataRetriever(DATASETS_DIR + CSVFILE)
             result = data_retrieve.retrieve_data()
             print(result)
         else:
