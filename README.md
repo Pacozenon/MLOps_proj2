@@ -131,8 +131,56 @@ Output
 pre-commit installed at .git/hooks/pre-commit
 ```
 
+git add *.py
 
-## Usage
+git commit -m "Check for code quality and consistency"
+
+
+Modify load_data.py
+
+insert two lines  
+   import sklearn
+   import joblib
+
+
+Check again for consistency and quality code 
+
+    ```bash
+    git commit -m "Check for code quality and consistency test"
+    
+            isort (python)...........................................................Failed
+            - hook id: isort
+            - files were modified by this hook
+
+            Fixing C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2\load\load_data.py
+
+            autopep8.............................................(no files to check)Skipped
+            flake8...............................................(no files to check)Skipped
+            autoflake............................................(no files to check)Skipped
+            black....................................................................Failed
+            - hook id: black
+            - files were modified by this hook
+
+            reformatted load\load_data.py
+
+            All done! \u2728 \U0001f370 \u2728
+            1 file reformatted.
+    ```
+The load_data.py has been reformatted, please set load_data.py to Staged Changes and check again!
+
+ ```bash
+        >git commit -m "Check for code quality and consistency test 2"      
+        isort (python)...........................................................Passed
+        autopep8.............................................(no files to check)Skipped
+        flake8...............................................(no files to check)Skipped
+        autoflake............................................(no files to check)Skipped
+        black....................................................................Passed
+        [main ff201f1] Check for code quality and consistency test 2
+        1 file changed, 31 insertions(+), 19 deletions(-)
+ ```
+This time we have our code clean and consistent.
+
+## TEST Usage
 
 1. Change to root directory.
 2. Run `python mlops_project.py` in the terminal.
