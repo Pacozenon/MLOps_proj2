@@ -100,7 +100,9 @@ This session talks about one of the most important practices to be able to climb
 
 * General, API & PyTest packages 
 
-        python -m pip install -r requirements-310.txt
+        pip install -r requirements-310.txt
+        pip install -r requirements-dev.txt
+        pip install -r requirements-api.txt
 
 ## Activate pre-commit hooks
 
@@ -122,7 +124,7 @@ pip install pre-commit
 ```
 
 ### Step 2: Initialize Pre-Commit for Your Project
-After reviewing the `.pre-commit-config.yaml` file, to look for hooks configured initialize pre-commit for the  project. Open your terminal or command prompt, navigate to the root directory of your project, and run the following command:
+After reviewing the `.pre-commit-config.yaml` file, to look for hooks configured initialize pre-commit for the  project. Open your terminal or command prompt, navigate to the root directory of your project, and run the following commands:
 ```bash
 pre-commit install
 ```
@@ -131,45 +133,48 @@ Output
 pre-commit installed at .git/hooks/pre-commit
 ```
 
-git add *.py
-
-git commit -m "Check for code quality and consistency"
-
-
-Modify load_data.py
-
-insert two lines  
-   import sklearn
-   import joblib
+    git add *.py
+    git commit -m "Check for code quality and consistency"
 
 
-Check again for consistency and quality code 
+To test how this precommit hooks works, please modify load_data.py and insert two lines with packages we don't need
 
-    ```bash
+    import sklearn
+    import joblib
+
+
+Check again for consistency and quality code:
+
     git commit -m "Check for code quality and consistency test"
-    
-            isort (python)...........................................................Failed
-            - hook id: isort
-            - files were modified by this hook
 
-            Fixing C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2\load\load_data.py
+Result:
 
-            autopep8.............................................(no files to check)Skipped
-            flake8...............................................(no files to check)Skipped
-            autoflake............................................(no files to check)Skipped
-            black....................................................................Failed
-            - hook id: black
-            - files were modified by this hook
 
-            reformatted load\load_data.py
+        isort (python)...........................................................Failed
+        - hook id: isort
+        - files were modified by this hook
 
-            All done! \u2728 \U0001f370 \u2728
-            1 file reformatted.
-    ```
-The load_data.py has been reformatted, please set load_data.py to Staged Changes and check again!
+        Fixing C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2\load\load_data.py
 
- ```bash
-        >git commit -m "Check for code quality and consistency test 2"      
+        autopep8.............................................(no files to check)Skipped
+        flake8...............................................(no files to check)Skipped
+        autoflake............................................(no files to check)Skipped
+        black....................................................................Failed
+        - hook id: black
+        - files were modified by this hook
+
+        reformatted load\load_data.py
+
+        All done! \u2728 \U0001f370 \u2728
+        1 file reformatted.
+
+The load_data.py file has been reformatted, please set load_data.py to Staged Changes and check again!
+
+
+    git commit -m "Check for code quality and consistency test 2"      
+
+Result
+
         isort (python)...........................................................Passed
         autopep8.............................................(no files to check)Skipped
         flake8...............................................(no files to check)Skipped
@@ -177,10 +182,10 @@ The load_data.py has been reformatted, please set load_data.py to Staged Changes
         black....................................................................Passed
         [main ff201f1] Check for code quality and consistency test 2
         1 file changed, 31 insertions(+), 19 deletions(-)
- ```
+ 
 This time we have our code clean and consistent.
 
-## TEST Usage
+## Program to test all functionality
 
 1. Change to root directory.
 2. Run `python mlops_project.py` in the terminal.
@@ -227,6 +232,36 @@ This time we have our code clean and consistent.
  If you open the terminal you will something like this:
 
   ![API Train Model Terminal output](./docs/api_trainmodel.png)
+
+# PART 2 
+
+## Logging functionality
+
+We have defined a class to implement logging in a easy way: [Logging CLASS](./utilities/logging.py)
+
+To use the class, use
+
+    import logging 
+    from utilities.logging import MyLogger
+    ...
+    ...
+    # to instanciate the logging class
+    logfile = MyLogger("RetrieveFiles", logging.DEBUG)
+
+    # to record events 
+    self.logfile.critical(
+                f"There was a problem downloading the ZIP File or unzipping the CSV '{DATASETS_DIR+CSVFILE}' "
+            )
+
+
+    self.logfile.info(
+        f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV"
+            )
+
+
+Output example:
+
+  ![Log FILE OUTPUT ](./docs/logging_results.png)
 
 ## Directory structure & Cookiecutter
 1. You will find a structure provided by Cookiecutter
