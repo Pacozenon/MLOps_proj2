@@ -10,6 +10,9 @@ files/
 #Data Files
 data/
 
+#pkl Files
+*.pkl
+
 #virtual environment
 venv310/
 venv310/
