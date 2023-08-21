@@ -82,9 +82,14 @@ def classify(Online_TX_features: OnlineTX):
     ]
     prediction = predictor.predict([X])
     logfile.debug(
-        f"Classification-> INPUT [{Online_TX_features.type} {Online_TX_features.amount} {Online_TX_features.oldbalanceOrg} {Online_TX_features.newbalanceOrg}"
+        f"Classification-> INPUT [\n"
+        f"                         type: {Online_TX_features.type}\n"
+        + f"                       amount: {Online_TX_features.amount} \n"
+        + f"                oldbalanceorg: {Online_TX_features.oldbalanceOrg} \n"
+        + f"                newbalanceorg: {Online_TX_features.newbalanceOrg}]"
+        + f"\n                     Result-> {prediction}"
     )
-    logfile.debug(f"Result-> INPUT [{prediction}")
+    # logfile.debug(f"Result-> {prediction}")
 
     return JSONResponse(f"Resultado predicción: {prediction}")
 
