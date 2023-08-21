@@ -194,7 +194,7 @@ This time we have our code clean and consistent.
 1. Access `http://127.0.0.1:8000/`, you will see a message like this `"Online Fraud Classifier is all ready to go!"`
 2. Access `http://127.0.0.1:8000/docs`, the browser will display something like this:
 
-    ![FastAPI Docs](./imgs/fast-api-docs.png)
+    ![FastAPI Docs](./docs/api_docs.png)
 
 3. Try running the classify endpoint by providing some data:
 	
@@ -207,7 +207,8 @@ This time we have our code clean and consistent.
     "newbalanceOrg": 2930418.44
     }
     ```
-    
+    ![API TEST Fraud Case](./docs/api_fraud_case.png)
+
     **Request body : NO FRAUD CASES** 
     ```bash
     {
@@ -217,8 +218,15 @@ This time we have our code clean and consistent.
     "newbalanceOrg": 2013133.01
     }
     ```
+    ![API TEST NO Fraud Case](./docs/api_nofraud_case.png)
 
+3. Try running the Train endpoint:
 
+ ![API Train Model endpoint](./docs/api_train.png)
+
+ If you open the terminal you will something like this:
+
+  ![API Train Model Terminal output](./docs/api_trainmodel.png)
 
 ## Directory structure & Cookiecutter
 1. You will find a structure provided by Cookiecutter
