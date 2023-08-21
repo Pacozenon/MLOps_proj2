@@ -81,15 +81,15 @@ This session talks about one of the most important practices to be able to climb
 1. Create a virtual environment with `Python 3.10+` from the root folder
     * Create venv
         ```bash
-        python3.10 -m venv venv310
+        python3.10 -m venv venv
         ```
 
     * Activate the virtual environment
         ```
         Linux:
-              source venv310/bin/activate
+              source venv/bin/activate
         Windows:
-              ./venv310/scripts/activate.ps1
+              ./venv/scripts/activate.ps1
         ```
 2. Make sure you are on the root folder
 
@@ -100,7 +100,37 @@ This session talks about one of the most important practices to be able to climb
 
 * General, API & PyTest packages 
 
-        pip install -r requirements.txt
+        python -m pip install -r requirements-310.txt
+
+## Activate pre-commit hooks
+
+### Pre-commits
+Pre-commits are automated checks that run on your code before you commit changes, helping ensure code quality and consistency. In this guide, we'll use the `pre-commit` tool to set up pre-commits for Python projects in Visual Studio Code (VSC).
+
+### Prerequisites
+
+1. Python is installed on your system.
+2. Visual Studio Code (VSC) is installed on your system.
+3. `pip` is installed on your system.
+
+### Step 1: Install `pre-commit`
+
+First, you need to install the `pre-commit` tool on your system. Open your terminal or command prompt and run the following command:
+
+```bash
+pip install pre-commit
+```
+
+### Step 2: Initialize Pre-Commit for Your Project
+After reviewing the `.pre-commit-config.yaml` file, to look for hooks configured initialize pre-commit for the  project. Open your terminal or command prompt, navigate to the root directory of your project, and run the following command:
+```bash
+pre-commit install
+```
+Output
+```bash
+pre-commit installed at .git/hooks/pre-commit
+```
+
 
 ## Usage
 
