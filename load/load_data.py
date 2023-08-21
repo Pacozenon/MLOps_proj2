@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from io import BytesIO
@@ -8,6 +9,8 @@ import joblib
 import numpy as np
 import pandas as pd
 import sklearn
+
+from utilities.logging import MyLogger
 
 
 class RetrieveURLZIP_ExtractFile:
@@ -34,6 +37,7 @@ class RetrieveURLZIP_ExtractFile:
 
     def __init__(self, url):
         self.url = url
+        self.logfile = MyLogger("RetrieveURLZIP_ExtractFile", logging.DEBUG)
 
     def retrieve_data(self):
         """
@@ -48,9 +52,10 @@ class RetrieveURLZIP_ExtractFile:
         # Create directory if it does not exist
         if not os.path.exists(DATASETS_DIR):
             os.makedirs(DATASETS_DIR)
-            print(f"Directory '{DATASETS_DIR}' created successfully.")
+            #    print(f"Directory '{DATASETS_DIR}' created successfully.")
+            self.logfile.debug(f"Directory '{DATASETS_DIR}' created successfully.")
         else:
-            print(f"Directory '{DATASETS_DIR}' already exists.")
+            self.logfile.debug(f"Directory '{DATASETS_DIR}' already exists.")
 
         # currentdir= os.curdir()
 
@@ -60,8 +65,9 @@ class RetrieveURLZIP_ExtractFile:
         with urlopen(self.url) as zipresp:
             with ZipFile(BytesIO(zipresp.read())) as zfile:
                 zfile.extractall(DATASETS_DIR)
-
-        return f"Data unzipped in {self.DATASETS_DIR}"
+        ret = f"Data unzipped in {self.DATASETS_DIR}"
+        self.logfile.info(ret)
+        return ret
 
 
 # Usage Example:

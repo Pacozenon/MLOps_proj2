@@ -1,3 +1,5 @@
+import logging
+
 # from train.train_data import FraudDetectionPipeline
 import os
 
@@ -17,6 +19,7 @@ from preprocess.preprocess_data import (
     OrderingFeatures,
     RareLabelCategoricalEncoder,
 )
+from utilities.logging import MyLogger
 
 # ZIP URL
 # IT's a big file!! ZIP (180Mb) CSV(480Mb)
@@ -37,6 +40,7 @@ RETRIEVED_DATA = (
 class Retrieve_Files:
     def __init__(self):
         self = self
+        self.logfile = MyLogger("RetrieveFiles", logging.DEBUG)
 
     def retrieve_files(self):
         Flag_result = "Ok"
@@ -49,7 +53,7 @@ class Retrieve_Files:
         # It's a big file so try not to downloaded and unzip it every run
         if not os.path.isfile(DATASETS_DIR + CSVFILE):
             # if we don't have the CSV, proceed to download it and unzip it
-            print(
+            self.logfile.info(
                 f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV"
             )
             data_retriever = RetrieveURLZIP_ExtractFile(ZIPURL)
@@ -58,25 +62,27 @@ class Retrieve_Files:
 
         # if we still don't have the CSV file: Houston we have a problem!
         if not os.path.isfile(DATASETS_DIR + CSVFILE):
-            print(
+            self.logfile.critical(
                 f"There was a problem downloading the ZIP File or unzipping the CSV '{DATASETS_DIR+CSVFILE}' "
             )
             Flag_result = "Error"
         else:
-            print(f"File '{DATASETS_DIR+CSVFILE}' in place!")
+            self.logfile.info(f"File '{DATASETS_DIR+CSVFILE}' in place!")
 
         # if we already have the retrieved file, skip this section
         if not os.path.isfile(DATASETS_DIR + RETRIEVED_DATA):
             data_retrieve = DataRetriever(DATASETS_DIR + CSVFILE)
             result = data_retrieve.retrieve_data()
-            print(result)
+            self.logfile.info(result)
         else:
             result = f"File '{DATASETS_DIR+RETRIEVED_DATA}' in place!"
-            print(result)
+            self.logfile.info(result)
 
         if Flag_result == "Ok":
+            self.logfile.info("Data retrieved")
             return "Data retrieved"
         else:
+            self.logfile.error("FILES NOT AVAILABLE")
             return "FILES NOT AVAILABLE!"
 
 
@@ -111,6 +117,8 @@ class FraudDetectionPipeline:
         self.CATEGORICAL_VARS = categorical_vars
         self.SEED_MODEL = seed_model
         self.SELECTED_FEATURES = selected_features
+        # logging instance
+        self.logfile = MyLogger("FraudDetectionPipeline", logging.DEBUG)
 
     def create_pipeline(self):
         """
@@ -119,6 +127,7 @@ class FraudDetectionPipeline:
         Returns:
             Pipeline: A scikit-learn pipeline for data processing and modeling.
         """
+        self.logfile.debug("Create data pipeline")
         self.PIPELINE = Pipeline(
             [
                 ## Every numerical var has data... we have ZERO NA's
@@ -168,6 +177,7 @@ class FraudDetectionPipeline:
         Returns:
         - Decision Tree _model (DecisionTree): The fitted Decision Tree model.
         """
+        self.logfile.debug("Train Decision Model")
         Decision_tree_model = DecisionTreeClassifier()
         pipeline = self.create_pipeline()
         pipeline.fit(X_train, y_train)
@@ -184,5 +194,6 @@ class FraudDetectionPipeline:
         Returns:
         - transformed_data (pandas.DataFrame or numpy.ndarray): The preprocessed test data.
         """
+        self.logfile.debug("Transform raw data w/transformations needed in Model")
         pipeline = self.create_pipeline()
         return pipeline.transform(X_test)

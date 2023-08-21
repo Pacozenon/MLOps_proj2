@@ -147,9 +147,7 @@ if __name__ == "__main__":
     logfile.info(confusion_matrix(y_test, class_pred))
 
     logfile.info("Classification Report")
-    print(classification_report(y_test, class_pred))
-
-    logfile.debug(f"Load Trained model from : {SAVE_PATH}")
+    logfile.info(classification_report(y_test, class_pred))
 
     trained_model = joblib.load(filename=SAVE_PATH)
 

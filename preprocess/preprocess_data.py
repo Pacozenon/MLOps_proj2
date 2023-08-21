@@ -1,9 +1,12 @@
+import logging
 import re
 
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_array
+
+from utilities.logging import MyLogger
 
 
 class MissingIndicator(BaseEstimator, TransformerMixin):
@@ -459,6 +462,7 @@ class Change_TransactionType(BaseEstimator, TransformerMixin):
             None
         """
         self.variable = "type"
+        self.logfile = MyLogger("Change_TransactionType", logging.DEBUG)
 
     def fit(self, X, y=None):
         """
@@ -484,6 +488,7 @@ class Change_TransactionType(BaseEstimator, TransformerMixin):
         Returns:
             X_transformed (pd.DataFrame): Transformed DataFrame with letters extracted from the specified variable.
         """
+        self.logfile.debug("Class transformation for transaction TYPE")
         X = X.copy()
         X[self.variable] = X[self.variable].map(
             {"CASH_OUT": 1, "PAYMENT": 2, "CASH_IN": 3, "TRANSFER": 4, "DEBIT": 5}

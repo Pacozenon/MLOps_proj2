@@ -1,14 +1,17 @@
+import logging
 import os
 import sys
 from typing import Annotated
 
 import joblib
 import pandas as pd
-from classifier.classifier import ModelClassifier
 from fastapi import FastAPI, Path
 from sklearn.model_selection import train_test_split
 from starlette.responses import JSONResponse
+
+from classifier.classifier import ModelClassifier
 from train.train_data import FraudDetectionPipeline, Retrieve_Files
+from utilities.logging import MyLogger
 
 from .models.models import OnlineTX
 
@@ -59,9 +62,12 @@ SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
 
 app = FastAPI()
 
+logfile = MyLogger("API Controller", logging.DEBUG)
+
 
 @app.get("/", status_code=200)
 async def healthcheck():
+    logfile.info("ACTION->Online Fraud Classifier is all ready to go!")
     return "Online Fraud Classifier is all ready to go!"
 
 
@@ -75,6 +81,11 @@ def classify(Online_TX_features: OnlineTX):
         Online_TX_features.newbalanceOrg,
     ]
     prediction = predictor.predict([X])
+    logfile.debug(
+        f"Classification-> INPUT [{Online_TX_features.type} {Online_TX_features.amount} {Online_TX_features.oldbalanceOrg} {Online_TX_features.newbalanceOrg}"
+    )
+    logfile.debug(f"Result-> INPUT [{prediction}")
+
     return JSONResponse(f"Resultado predicción: {prediction}")
 
 
@@ -82,6 +93,8 @@ def classify(Online_TX_features: OnlineTX):
 def train_model():
     # Change location to the refactored directory
     os.chdir(REFACTORED_DIRECTORY)
+
+    logfile.debug(f"ACTION -> Train model ")
 
     # This class will retrieve ZIP file and extract csv
     retrieve_files = Retrieve_Files()
@@ -109,6 +122,6 @@ def train_model():
     DecisionTreeModel = fraud_data_pipeline.fit_DecisionTree(X_train, y_train)
 
     result = joblib.dump(DecisionTreeModel, SAVE_PATH)
-    print(f"Model saved in {result}")
+    logfile.debug(f"ACTION -> Train model saved in {result}")
 
     return "Trained model ready to go!"

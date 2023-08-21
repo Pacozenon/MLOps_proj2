@@ -1,6 +1,9 @@
 import argparse
+import logging
 
 import joblib
+
+from utilities.logging import MyLogger
 
 
 class ModelClassifier:
@@ -27,6 +30,7 @@ class ModelClassifier:
             model_path (str): Path to the trained model file (joblib format).
         """
         self.model = joblib.load(model_path)
+        self.logfile = MyLogger("ModelClassifier", logging.DEBUG)
 
     def predict(self, new_data):
         """
@@ -38,6 +42,7 @@ class ModelClassifier:
         Returns:
             Predicted outputs from the model.
         """
+        self.logfile.debug("Model Classifier")
         return self.model.predict(new_data)
 
 
@@ -51,7 +56,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    predictor = ModelPredictor(args.model_path)
+    predictor = ModelClassifier(args.model_path)
 
     new_data = args.new_data
 
