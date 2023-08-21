@@ -42,7 +42,7 @@ class Retrieve_Files:
         Flag_result = "Ok"
         # Change location to the refactored directory
         # print(os.getcwd())
-        os.chdir(REFACTORED_DIRECTORY)
+        # os.chdir(REFACTORED_DIRECTORY)
         # print(os.getcwd())
 
         # Check if we already have the file.
