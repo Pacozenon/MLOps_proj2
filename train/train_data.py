@@ -3,22 +3,14 @@ import logging
 # from train.train_data import FraudDetectionPipeline
 import os
 
-from sklearn.compose import ColumnTransformer
+# from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler
+
+# from sklearn.preprocessing import MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
 
 from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
-from preprocess.preprocess_data import (
-    CategoricalImputer,
-    Change_TransactionType,
-    FeatureSelector,
-    MissingIndicator,
-    NumericalImputer,
-    OneHotEncoder,
-    OrderingFeatures,
-    RareLabelCategoricalEncoder,
-)
+from preprocess.preprocess_data import Change_TransactionType
 from utilities.logging import MyLogger
 
 # ZIP URL
