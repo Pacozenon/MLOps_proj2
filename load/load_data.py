@@ -1,21 +1,25 @@
-from io import BytesIO
-import numpy as np
-import pandas as pd
 import os
 import re
+from io import BytesIO
 from urllib.request import urlopen
 from zipfile import ZipFile
+
+import joblib
+import numpy as np
+import pandas as pd
+import sklearn
+
 
 class RetrieveURLZIP_ExtractFile:
     """
     A class for retrieving a ZIP file from a given URL, UNZIP it on a ./Data/ directory for further analysis.
     Result
-       
+
     Parameters:
         url (str): The URL from which the data will be loaded.
     Attributes:
         url (str): The URL from which the data will be loaded.
-        
+
     Example usage:
     ```
     URL = 'https://www.openml.org/data/get_csv/16826755/phpMYEkMl'
@@ -25,12 +29,11 @@ class RetrieveURLZIP_ExtractFile:
     ```
     """
 
-    DATASETS_DIR = './data/'  # Directory where data will be saved.
-    RETRIEVED_DATA = 'retrieved_data.csv'  # File name for the retrieved data.
+    DATASETS_DIR = "./data/"  # Directory where data will be saved.
+    RETRIEVED_DATA = "retrieved_data.csv"  # File name for the retrieved data.
 
     def __init__(self, url):
         self.url = url
-
 
     def retrieve_data(self):
         """
@@ -39,8 +42,8 @@ class RetrieveURLZIP_ExtractFile:
         Returns:
             str: A message indicating the location of the stored data.
         """
-       
-        DATASETS_DIR = './data/'  # Directory where data will be unzip.
+
+        DATASETS_DIR = "./data/"  # Directory where data will be unzip.
 
         # Create directory if it does not exist
         if not os.path.exists(DATASETS_DIR):
@@ -49,16 +52,17 @@ class RetrieveURLZIP_ExtractFile:
         else:
             print(f"Directory '{DATASETS_DIR}' already exists.")
 
-        #currentdir= os.curdir()
+        # currentdir= os.curdir()
 
         # Retrieve zip file from specific URL
         # Unzip file to DATASET_DIR directory
-    
+
         with urlopen(self.url) as zipresp:
             with ZipFile(BytesIO(zipresp.read())) as zfile:
                 zfile.extractall(DATASETS_DIR)
 
-        return f'Data unzipped in {self.DATASETS_DIR}'
+        return f"Data unzipped in {self.DATASETS_DIR}"
+
 
 # Usage Example:
 # URL = 'https://www.openml.org/data/get_csv/16826755/phpMYEkMl'
@@ -86,10 +90,17 @@ class DataRetriever:
     ```
     """
 
-    DROP_COLS = ['step', 'nameOrig', 'nameDest', 'oldbalanceDest', 'newbalanceDest', 'isFlaggedFraud']
+    DROP_COLS = [
+        "step",
+        "nameOrig",
+        "nameDest",
+        "oldbalanceDest",
+        "newbalanceDest",
+        "isFlaggedFraud",
+    ]
 
-    DATASETS_DIR = './data/'  # Directory where data will be saved.
-    RETRIEVED_DATA = 'retrieved_data.csv'  # File name for the retrieved data.
+    DATASETS_DIR = "./data/"  # Directory where data will be saved.
+    RETRIEVED_DATA = "retrieved_data.csv"  # File name for the retrieved data.
 
     def __init__(self, csvfile):
         self.csvfile = csvfile
@@ -108,9 +119,9 @@ class DataRetriever:
         data.drop(self.DROP_COLS, axis=1, inplace=True)
 
         # Transform categorical attribute 'type'
-        #data["type"] = data["type"].map(
+        # data["type"] = data["type"].map(
         #    {"CASH_OUT": 1, "PAYMENT": 2, "CASH_IN": 3, "TRANSFER": 4, "DEBIT": 5}
-        #)
+        # )
 
         # Create directory if it does not exist
         if not os.path.exists(self.DATASETS_DIR):
@@ -122,7 +133,8 @@ class DataRetriever:
         # Save data to CSV file
         data.to_csv(self.DATASETS_DIR + self.RETRIEVED_DATA, index=False)
 
-        return f'Data stored in {self.DATASETS_DIR + self.RETRIEVED_DATA}'
+        return f"Data stored in {self.DATASETS_DIR + self.RETRIEVED_DATA}"
+
 
 # Usage Example:
 # URL = 'https://www.openml.org/data/get_csv/16826755/phpMYEkMl'
