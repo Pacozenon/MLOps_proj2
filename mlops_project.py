@@ -78,7 +78,7 @@ SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
 if __name__ == "__main__":
     # create logging file instance
 
-    logfile = MyLogger("Main_TEST", logging.DEBUG)
+    logfile = MyLogger("Main_TEST", logging.DEBUG, __name__)
 
     # Change location to the refactored directory
     # print(os.getcwd())

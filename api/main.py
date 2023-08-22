@@ -62,7 +62,7 @@ SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
 
 app = FastAPI()
 
-logfile = MyLogger("API Controller", logging.DEBUG)
+logfile = MyLogger("API Controller", logging.DEBUG, __name__)
 
 
 @app.get("/", status_code=200)

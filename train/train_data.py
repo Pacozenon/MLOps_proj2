@@ -1,6 +1,5 @@
-import logging
-
 # from train.train_data import FraudDetectionPipeline
+import logging
 import os
 
 # from sklearn.compose import ColumnTransformer
@@ -32,7 +31,7 @@ RETRIEVED_DATA = (
 class Retrieve_Files:
     def __init__(self):
         self = self
-        self.logfile = MyLogger("RetrieveFiles", logging.DEBUG)
+        self.logfile = MyLogger("Retrieve_Files", logging.DEBUG, __name__)
 
     def retrieve_files(self):
         Flag_result = "Ok"
@@ -45,6 +44,7 @@ class Retrieve_Files:
         # It's a big file so try not to downloaded and unzip it every run
         if not os.path.isfile(DATASETS_DIR + CSVFILE):
             # if we don't have the CSV, proceed to download it and unzip it
+
             self.logfile.info(
                 f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV"
             )
@@ -110,7 +110,7 @@ class FraudDetectionPipeline:
         self.SEED_MODEL = seed_model
         self.SELECTED_FEATURES = selected_features
         # logging instance
-        self.logfile = MyLogger("FraudDetectionPipeline", logging.DEBUG)
+        self.logfile = MyLogger("FraudDetectionPipeline", logging.DEBUG, __name__)
 
     def create_pipeline(self):
         """

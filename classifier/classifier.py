@@ -30,7 +30,7 @@ class ModelClassifier:
             model_path (str): Path to the trained model file (joblib format).
         """
         self.model = joblib.load(model_path)
-        self.logfile = MyLogger("ModelClassifier", logging.DEBUG)
+        self.logfile = MyLogger("ModelClassifier", logging.DEBUG, __name__)
 
     def predict(self, new_data):
         """

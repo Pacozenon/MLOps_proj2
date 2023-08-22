@@ -37,7 +37,7 @@ class RetrieveURLZIP_ExtractFile:
 
     def __init__(self, url):
         self.url = url
-        self.logfile = MyLogger("RetrieveURLZIP_ExtractFile", logging.DEBUG)
+        self.logfile = MyLogger("RetrieveURLZIP_ExtractFile", logging.DEBUG, __name__)
 
     def retrieve_data(self):
         """

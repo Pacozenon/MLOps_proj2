@@ -239,6 +239,12 @@ This time we have our code clean and consistent.
 
 We have defined a class to implement logging in a easy way: [Logging CLASS](./utilities/logging.py)
 
+This class has an __init__ method that takes three arguments: name, level, and module name. The name argument is used to create a logger with the specified name. The level argument is used to set the logging level of the logger. The default value is logging.DEBUG. The module name is used to specify the name of the log file. The default value is 'log/__name__.log'.
+
+The __init__ method also creates a formatter with a specified format string and a file handler with the specified model name. The formatter is set for the file handler, and the file handler is added to the logger.
+
+The class also has five methods: debug, info, warning, error, and critical, which log messages at the respective logging levels.
+
 To use the class, use
 
     import logging 
@@ -246,22 +252,23 @@ To use the class, use
     ...
     ...
     # to instanciate the logging class
-    logfile = MyLogger("RetrieveFiles", logging.DEBUG)
+    logfile = MyLogger("RetrieveFiles", logging.DEBUG, __name)
 
     # to record events 
     self.logfile.critical(
-                f"There was a problem downloading the ZIP File or unzipping the CSV '{DATASETS_DIR+CSVFILE}' "
-            )
+                f"There was a problem downloading the ZIP File or unzipping the CSV '{DATASETS_DIR+CSVFILE}' ")
 
 
     self.logfile.info(
-        f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV"
-            )
+        f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV)||")
 
 
-Output example:
+Output examples:
 
-  ![Log FILE OUTPUT ](./docs/logging_results.png)
+  ![API log file](./docs/api_log.png)
+
+  ![mlops_project log file](./docs/main_log.png)
+
 
 ## Directory structure & Cookiecutter
 1. You will find a structure provided by Cookiecutter

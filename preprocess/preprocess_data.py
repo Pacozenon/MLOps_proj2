@@ -462,7 +462,7 @@ class Change_TransactionType(BaseEstimator, TransformerMixin):
             None
         """
         self.variable = "type"
-        self.logfile = MyLogger("Change_TransactionType", logging.DEBUG)
+        self.logfile = MyLogger("Change_TransactionType", logging.DEBUG, __name__)
 
     def fit(self, X, y=None):
         """
