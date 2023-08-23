@@ -1,7 +1,6 @@
 """Main module."""
 import logging
 import os
-import re
 
 import joblib
 import numpy as np
@@ -14,8 +13,8 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
-from train.train_data import FraudDetectionPipeline, Retrieve_Files
+from app.load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
+from app.train.train_data import FraudDetectionPipeline, Retrieve_Files
 from utilities.logging import MyLogger
 
 # ZIP URL

@@ -2,14 +2,15 @@
 import logging
 import os
 
+from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
+from preprocess.preprocess_data import Change_TransactionType
+
 # from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
 # from sklearn.preprocessing import MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
 
-from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
-from preprocess.preprocess_data import Change_TransactionType
 from utilities.logging import MyLogger
 
 # ZIP URL
@@ -122,38 +123,7 @@ class FraudDetectionPipeline:
         self.logfile.debug("Create data pipeline")
         self.PIPELINE = Pipeline(
             [
-                ## Every numerical var has data... we have ZERO NA's
-                # (
-                #    'missing_indicator',
-                #    MissingIndicator(variables=self.NUMERICAL_VARS),
-                # ),
-                ##  type var has data... we have ZERO NA's
-                # (
-                #    'categorical_imputer',
-                #    CategoricalImputer(variables=self.CATEGORICAL_VARS_WITH_NA),
-                # ),
-                # Every numerical var has data... we have ZERO NA's
-                # (
-                #    'median_imputation',
-                #    NumericalImputer(variables=self.NUMERICAL_VARS_WITH_NA),
-                # ),
-                # (
-                #    'rare_labels',
-                #    RareLabelCategoricalEncoder(
-                #        tol=0.05, variables=self.CATEGORICAL_VARS
-                #    ),
-                # ),
                 ("Change transaction type", Change_TransactionType()),
-                # ('dummy_vars', OneHotEncoder(variables=self.CATEGORICAL_VARS)),
-                # ('feature_selector', FeatureSelector(self.SELECTED_FEATURES)),
-                # ('aligning_feats', OrderingFeatures()),
-                # ('scaling', MinMaxScaler()),
-                # (
-                #    'Decision_Tree',
-                #    DecisionTreeClassifier(
-                #        random_state=self.SEED_MODEL,
-                #    ),
-                # ),
             ]
         )
         return self.PIPELINE
@@ -172,8 +142,8 @@ class FraudDetectionPipeline:
         self.logfile.debug("Train Decision Model")
         Decision_tree_model = DecisionTreeClassifier()
         pipeline = self.create_pipeline()
-        pipeline.fit(X_train, y_train)
-        Decision_tree_model.fit(pipeline.transform(X_train), y_train)
+        pipeline.fit(X_train.values, y_train)
+        Decision_tree_model.fit(pipeline.transform(X_train).values, y_train)
         return Decision_tree_model
 
     def transform_test_data(self, X_test):

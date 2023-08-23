@@ -8,6 +8,7 @@ files/
 
 #Data Files
 data/
+app/data
 
 #pkl Files
 *.pkl

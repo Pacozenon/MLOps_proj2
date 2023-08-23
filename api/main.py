@@ -9,11 +9,10 @@ from fastapi import FastAPI, Path
 from sklearn.model_selection import train_test_split
 from starlette.responses import JSONResponse
 
-from classifier.classifier import ModelClassifier
-from train.train_data import FraudDetectionPipeline, Retrieve_Files
+from app.models.models import OnlineTX
+from app.train.train_data import FraudDetectionPipeline, Retrieve_Files
+from classifier2.classifier import ModelClassifier
 from utilities.logging import MyLogger
-
-from .models.models import OnlineTX
 
 # refactored folder
 REFACTORED_DIRECTORY = "/Users/francisco.torres/Documents/GitHub/MLOps_project/Refactor/mlops_project/mlops_project"
@@ -91,7 +90,7 @@ def classify(Online_TX_features: OnlineTX):
     )
     # logfile.debug(f"Result-> {prediction}")
 
-    return JSONResponse(f"Resultado predicción: {prediction}")
+    return JSONResponse(f"Model Result: {prediction}")
 
 
 @app.get("/train_model", status_code=200)
