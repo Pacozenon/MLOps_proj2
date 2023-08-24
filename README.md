@@ -539,16 +539,16 @@ Output:
 
 First, create the network AIService by running this command:
 
-    ```bash
-    docker network create AIservice
-    ```
+```bash
+docker network create AIservice
+```
 
 Next, create the local volumes to be referenced on the compose script:
 
-    ```bash
-    docker volume create frontend_log
-    docker volume create app_log
-    ```
+```bash
+docker volume create frontend_log
+docker volume create app_log
+```
 
 
 #### Run Docker Compose
@@ -656,7 +656,7 @@ Next, create the local volumes to be referenced on the compose script:
         }
 
         ```
-    ![Compose_fraud_case](docs/Compose_fraud_case.png)
+    ![Compose_fraud_case](docs/compose_fraud_case.png)
 
     * **Prediction 2 No Fraud**  
         Request body
@@ -690,7 +690,7 @@ Open a new terminal, and execute the following commands:
 OR
    you can look at the local file created:
 
-   ![Compose_local_file_location](docs/Compose_local_file_location.png)       
+   ![Compose_local_file_location](docs/compose_local_file_location.png)       
 
 
 2. You can inspect the logs and see something similar to this:
@@ -705,7 +705,7 @@ OR
     2023-08-24 01:10:03,888:Main_TEST:logging:DEBUG:Prediction: "Resultado predicciÃ³n: [1]"
     ```
 
-    ![Compose_local_file_view](docs/Compose_local_file_view.png)    
+    ![Compose_local_file_view](docs/compose_local_file_view.png)    
 
 #### Opening the logs in App
 
@@ -725,7 +725,7 @@ Open a new terminal, and execute the following commands:
 OR
    you can look at the local file created:
 
-   ![Compose_local_file_location](docs/Compose_local_file_location.png)       
+   ![Compose_local_file_location](docs/compose_local_file_location.png)       
 
 
 2. You can inspect the logs and see something similar to this:
