@@ -564,62 +564,14 @@ docker volume create knn_log
 
     You will see something like this:
 
-    ```bash
-        [+] Building 5.7s (3/3)
-    => [app internal] load .dockerignore                                                                              0.0s
-    [+] Building 21.3s (16/16) FINISHED
-    => [app internal] load .dockerignore                                                                              0.0s
-    => => transferring context: 2B                                                                                    0.0s
-    => [app internal] load build definition from Dockerfile                                                           0.0s
-    => => transferring dockerfile: 281B                                                                               0.0se
-    => [frontend internal] load metadata for docker.io/library/python:3.11-slim                                       6.1s
-    => [app internal] load build context                                                                              0.0s
-    => => transferring context: 2.01kB                                                                                0.0s
-    => CACHED [frontend 1/5] FROM docker.io/library/python:3.11-slim@sha256:17d62d681d9ecef20aae6c6605e9cf83b0ba3dc2  0.0s
-    => CACHED [app 2/5] COPY . .                                                                                      0.0s
-    => CACHED [app 3/5] RUN pip3 install --no-cache-dir -r requirements.txt                                           0.0s
-    => CACHED [app 4/5] RUN apt-get update && apt-get install -y vim                                                  0.0s
-    => [app] exporting to image                                                                                       0.0s
-    => => exporting layers                                                                                            0.0s
-    => => writing image sha256:af7f8e45bfdcf8d349977b143f747dd530ac52923307b3bc8cc951814c8364d0                       0.0s
-    => => naming to docker.io/library/mlops_proj2-app                                                                 0.0s
-    => [frontend internal] load build definition from Dockerfile                                                      0.0s
-    => => transferring dockerfile: 296B                                                                               0.0s
-    => [frontend internal] load .dockerignore                                                                         0.0s
-    => => transferring context: 2B                                                                                    0.0s
-    => [frontend internal] load build context                                                                         0.0s
-    => => transferring context: 2.34kB                                                                                0.0s
-    => [frontend 2/5] COPY . .                                                                                        0.0s
-    => [frontend 3/5] RUN pip3 install --no-cache-dir -r requirements.txt                                             7.8s
-    => [frontend 4/5] RUN apt-get update && apt-get install -y vim                                                    6.5s
-    => [frontend] exporting to image                                                                                  0.4s
-    => => exporting layers                                                                                            0.4s
-    => => writing image sha256:f6b024d2c2c14f4a34e790e60dcf3c90e01d7be569a676e82ccd699f01add8ff                       0.0s
-    => => naming to docker.io/library/mlops_proj2-frontend                                                            0.0s
-    [+] Running 2/0
-    ✔ Container mlops_proj2-app-1       Created                                                                       0.0s
-    ✔ Container mlops_proj2-frontend-1  Created                                                                       0.0s
-    Attaching to mlops_proj2-app-1, mlops_proj2-frontend-1
-    mlops_proj2-app-1       | INFO:     Will watch for changes in these directories: ['/']
-    mlops_proj2-app-1       | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    mlops_proj2-app-1       | INFO:     Started reloader process [1] using StatReload
-    mlops_proj2-frontend-1  | INFO:     Will watch for changes in these directories: ['/']
-    mlops_proj2-frontend-1  | INFO:     Uvicorn running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-    mlops_proj2-frontend-1  | INFO:     Started reloader process [1] using StatReload
-    mlops_proj2-frontend-1  | INFO:     Started server process [8]
-    mlops_proj2-frontend-1  | INFO:     Waiting for application startup.
-    mlops_proj2-frontend-1  | INFO:     Application startup complete.
-    mlops_proj2-app-1       | INFO:     Started server process [8]
-    mlops_proj2-app-1       | INFO:     Waiting for application startup.
-    mlops_proj2-app-1       | INFO:     Application startup complete.
-    ```
+    ![compose command](./docs/KNN_compose_comm.png)
 
 #### Checking endpoints in Frontend
 
 1. Access `http://127.0.0.1:3000/`, and you will see a message like this `"Front End  Fraud Classifier is all ready to go!"`
 2. A file called `main.log` will be created automatically inside the container (volume: `frontend_log`). We will inspect it below.
 3. Access `http://127.0.0.1:3000/docs`, the browser will display something like this:
-    ![Frontend Docs](docs/compose_docs.png)
+    ![Frontend Docs](docs/frontend_KNN.png)
 
 4. Try running the following predictions with the endpoint `classify` by writing the following values:
     * **Prediction 1**  
@@ -646,7 +598,7 @@ docker volume create knn_log
 
 5B. Run the Train_modelKNN endpoint
 
-    ![knn_create_model](docs/knn_create_model.png)
+    ![knn_create_model](docs/knn_model_created.png)
 
 6. Again, try running the following predictions with the endpoint `classify` by writing the following values:
     * **Prediction 1 Fraud Case**  
@@ -723,7 +675,7 @@ Open a new terminal, and execute the following commands:
 OR
    you can look at the local file created:
 
-   ![Compose_local_file_location](docs/compose_local_file_location.png)       
+   ![Compose_local_file_location](docs/knn_locations.png)       
 
 
 2. You can inspect the logs and see something similar to this:
@@ -788,9 +740,10 @@ OR
     Output:
 
     ```bash
-    [+] Stopping 2/2
-    ✔ Container mlops_proj2-frontend-1  Stopped                                                                       0.7s
-    ✔ Container mlops_proj2-app-1       Stopped                         0.4s 
+    [+] Stopping 3/3
+    ✔ Container mlops_proj2-frontend-1  Stopped                                                                       0.8s
+    ✔ Container mlops_proj2-appknn-1    Stopped                                                                       0.9s
+    ✔ Container mlops_proj2-app-1       Stopped
     ```
 
 2. Delete the containers stopped from the stage.
@@ -802,10 +755,11 @@ OR
     Output:
 
     ```bash
-    ? Going to remove mlops_proj2-frontend-1, mlops_proj2-app-1 Yes
-    [+] Removing 2/0
+    ? Going to remove mlops_proj2-appknn-1, mlops_proj2-frontend-1, mlops_proj2-app-1 Yes
+    [+] Removing 3/0
     ✔ Container mlops_proj2-app-1       Removed                                                                       0.1s
-    ✔ Container mlops_proj2-frontend-1  Removed                      0.0s 
+    ✔ Container mlops_proj2-appknn-1    Removed                                                                       0.1s
+    ✔ Container mlops_proj2-frontend-1  Removed
     ```
 ## Directory structure & Cookiecutter
 1. You will find a structure provided by Cookiecutter
