@@ -289,11 +289,12 @@ weighted avg       1.00      1.00      1.00   1272524
 
 3. Try running the Train endpoint:
 
- ![API Train Model endpoint](./docs/api_train.png)
+   ![API Train Model endpoint](./docs/API_Train.png)
 
- If you open the terminal you will something like this:
 
-  ![API Train Model Terminal output](./docs/api_trainmodel.png)
+If you open the terminal you will something like this:
+
+   ![API Train Model Terminal output](./docs/API_TrainModel.png)
 
 # PART 2 
 
