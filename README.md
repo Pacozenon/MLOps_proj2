@@ -5,13 +5,40 @@ ___
 #### Student:   Francisco Javier Torres Zenón  A01688757
 ____
 
+## Introduction of the project
+
+Welcome to the final project focused on MLOps, where the key concepts of ML frameworks and their application will be applied in a practical approach. Throughout this project, the basic concepts and fundamental tools for developing software in the field of MLOps are shown, covering everything from configuring the environment to best practices for creating ML models and deploying them.
+
+## About the project
+
+The overall goal of this project is to build a robust and reproducible MLOps workflow for developing, training, and deploying machine learning models. A linear regression model will be used as a proof of concept due to its simplicity, and it will be applied to the Titanic data set to predict the probability of survival of a passenger based on certain characteristics.
+
+This project covers the following topics:
+
+1. **Key concepts of ML systems**  
+The objective of this module is to give an introduction to MLOps, life cycle and architecture examples is also given.
+
+2. **Basic concepts and tools for software development**  
+This module focuses on introducing the principles of software development that will be used in MLOps. Consider the configuration of the environment, tools to use, and best practices, among other things.
+
+3. **Development of ML models**  
+This module consists of showing the development of an ML model from experimentation in notebooks, and subsequent code refactoring, to the generation of an API to serve the model.
+
+4. **Deployment of ML models**  
+The objective of this module is to show how a model is served as a web service to make predictions.
+
+5. **Integration of concepts**  
+This module integrates all the knowledge learned in the previous modules. A demo of Continuous Delivery is implemented.
+
+
+
 ## References
 * Dataset and baseline notebook copied from [Online Payments Fraud Detection Dataset | Kaggle](https://www.kaggle.com/datasets/rupakroy/online-payments-fraud-detection-dataset) 
 * Dataset: https://www.kaggle.com/datasets/rupakroy/online-payments-fraud-detection-dataset/download?datasetVersionNumber=1
 * Baseline notebook: https://www.kaggle.com/code/nehahatti/online-payments-fraud-detection-project/notebook
 
+### Baseline
 
-# About this notebook
 This notebook was taken and changed from [Kaggle](http://www.kaggle.com)
 
 1. The task is to predict online payment fraud, given a number of features from online transfer/deposits transactions.
@@ -41,13 +68,21 @@ weighted avg       1.00      1.00      1.00   1272524
 
 ## Scope
 
+This MLOps project is focused on demonstrating the implementation of a complete workflow that ranges from data preparation to exposing a local web service to make predictions using a linear regression model.
+
+
 * Project focused on MLOps, where the key concepts of ML frameworks learned on this course were applied in a holistic approach.
 
 * In this project we will apply the best practices in MLOPs to a baseline notebook to create a model to predict online payment fraud, ready to use via API.
 
+This project is planned to cover the topics seen in the course syllabus, which was designed to include technical capacity levels 0, 1 and a small part of 2 of [Machine Learning operations maturity model - Azure Architecture Center | Microsoft Learn](https://learn.microsoft.com/en-us/azure/architecture/example-scenario/mlops/mlops-maturity-model).
+
+In other words, knowledge is integrated regarding the learning of good software development practices and Dev Ops (Continuous Integration) applied to the deployment of ML models.
+
 ### Out of Scope
 
-* Since we have already have on the baseline a good recall(0.95) and F1-Score(0.93) metrics over the FRAUD cases, we will note explore another methods.
+* Since we have already have on the baseline a good recall(0.95) and F1-Score(0.89) metrics over the FRAUD cases, we will note explore another methods. We will explore another method only to show frontend + multiple predictors  Docker compose 
+
 
 * Also we will not make an intensive feature analysis nor feature engineering.
 
@@ -72,18 +107,19 @@ Part II
     Directory structure
     OOP (Classes, methods, transformers, pipelines)
     REST API - FastAPI
-
-This session talks about one of the most important practices to be able to climb an ML system: refactorization. Topics such as the directories structure of an ML system are included, the weaknesses that a notebook has to use in production, and a demo to refactorize an existing project.
+Part III 
+    Logging
+    API deployment with Docker
+    Frontend-Backend Architecture with Docker Compose
 
 ## Setup
-### Virtual environment
+### Python version, virtual environment and packages to install
 
 1. Create a virtual environment with `Python 3.10+` from the root folder
     * Create venv
         ```bash
         python3.10 -m venv venv
         ```
-
     * Activate the virtual environment
         ```
         Linux:
@@ -98,11 +134,13 @@ This session talks about one of the most important practices to be able to climb
        
 ## Install all requerimients files
 
-* General, API & PyTest packages 
+* General, API & PyTest packages
 
+```bash
         pip install -r requirements-310.txt
         pip install -r requirements-dev.txt
         pip install -r requirements-api.txt
+```
 
 ## Activate pre-commit hooks
 
@@ -137,10 +175,10 @@ pre-commit installed at .git/hooks/pre-commit
     git commit -m "Check for code quality and consistency"
 
 
-To test how this precommit hooks works, please modify load_data.py and insert two lines with packages we don't need
+To test how this precommit hooks works, please modify `app\load\load_data.py` and insert two lines with packages we don't need
 
-    import sklearn
-    import joblib
+    import tensorflow
+    import pytorch
 
 
 Check again for consistency and quality code:
@@ -187,13 +225,37 @@ This time we have our code clean and consistent.
 
 ## Program to test all functionality
 
-1. Change to root directory.
+1. From root directory change to `app`  folder
 2. Run `python mlops_project.py` in the terminal.
+
+Output:
+
+```
+test roc-auc : 0.9276785155384277
+test accuracy: 0.9996675897664798
+
+Confussion Matrix
+[[1270686     184]
+ [    239    1415]]
+```
+
+```
+ Classification Report
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00   1270870
+           1       0.88      0.86      0.87      1654
+
+    accuracy                           1.00   1272524
+   macro avg       0.94      0.93      0.93   1272524
+weighted avg       1.00      1.00      1.00   1272524
+```
+
 
 ## Test API
 
 1. Change to root directory.
-2. Run `uvicorn api.main:app --reload` in the terminal.
+2. Run `uvicorn app.main:app --reload` in the terminal.
 
 ## Checking endpoints
 1. Access `http://127.0.0.1:8000/`, you will see a message like this `"Online Fraud Classifier is all ready to go!"`
@@ -237,9 +299,9 @@ This time we have our code clean and consistent.
 
 ## Logging functionality
 
-We have defined a class to implement logging in a easy way: [Logging CLASS](./utilities/logging.py)
+We have defined a class to implement logging in a easy way: [Logging CLASS](./app/utilities/logging.py)
 
-This class has an __init__ method that takes three arguments: name, level, and module name. The name argument is used to create a logger with the specified name. The level argument is used to set the logging level of the logger. The default value is logging.DEBUG. The module name is used to specify the name of the log file. The default value is 'log/__name__.log'.
+This class has an __init__ method that takes three arguments: name, level, and module name. The name argument is used to create a logger with the specified name. The level argument is used to set the logging level of the logger. The default value is logging.DEBUG. The module name is used to specify the name of the log file. The default value is 'logs/__name__.log'.
 
 The __init__ method also creates a formatter with a specified format string and a file handler with the specified model name. The formatter is set for the file handler, and the file handler is added to the logger.
 
@@ -248,7 +310,7 @@ The class also has five methods: debug, info, warning, error, and critical, whic
 To use the class, use
 
     import logging 
-    from utilities.logging import MyLogger
+    from app.utilities.logging import MyLogger
     ...
     ...
     # to instanciate the logging class
@@ -263,14 +325,466 @@ To use the class, use
         f"Please wait downloading ZIP File '{CSVFILE}' (190Mb ZIP - 480Mb CSV)||")
 
 
-Output examples:
+Logging in action:
 
-  ![API log file](./docs/api_log.png)
+![API log file](./docs/api_log.png)
 
-  ![mlops_project log file](./docs/main_log.png)
+![mlops_project log file](./docs/main_log.png)
+
+### Individual deployment of the API with Docker and usage
+
+#### Build the image
+
+* Ensure you are in the `MLOPs_proj2/` directory (root folder).
+* Run the following code to build the image:
+
+    ```bash
+    docker build -t fraud-image ./app/
+    ```
+  ![Output docker create image](./docs/app_only_create_image.png)
+
+* Inspect the image created by running this command:
+
+    ```bash
+    docker images
+    ```
+
+    ![Output show docker images](./docs/app_only_show_image.png)
+
+#### Use Volume capabilities
+
+Volumes are the preferred mechanism for persisting data generated by and used by Docker containers. Volumes have several advantages over bind mounts:
+
+* You can manage volumes using Docker CLI commands or the Docker API.
+* Volumes work on both Linux and Windows containers.
+* Volumes can be more safely shared among multiple containers.
+* Volume drivers let you store volumes on remote hosts or cloud providers, to encrypt the contents of volumes, or to add other functionality.
+* New volumes can have their content pre-populated by a container.
+
+1. Run the next command to create a volumen to reference later on the docker run command 
+
+```bash
+docker volume create app_log
+```
+Check the volume properties 
+```bash
+docker volume inspect app_log
+```
+Output:
+
+```
+PS C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2> docker volume inspect app_log
+[
+    {
+        "CreatedAt": "2023-08-23T01:26:56Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/app_log/_data",
+        "Name": "app_log",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+```
+
+Note: In windows you can locate this folder in this path:
+```
+\\wsl$\docker-desktop-data\data\docker\volumes
+\\wsl.localhost\docker-desktop-data\data\docker\volumes\
+```
+
+#### Run Fraud-Image REST API on DOCKER container
+
+1. Run the next command to start the `fraud-image` image in a container.
+
+    ```bash
+    docker run -d --rm --name fraud-image -v app_log:/logs -p 8000:8000 fraud-image
+    ```
+
+2. Check the container running.
+
+    ```bash
+    docker ps -a
+    ```
+
+    Output:
+
+    ```bash
+    CONTAINER ID   IMAGE         COMMAND                  CREATED         STATUS         PORTS                    NAMES
+    218b4569efc2   fraud-image   "uvicorn main:app --…"   5 minutes ago   Up 5 minutes   0.0.0.0:8000->8000/tcp   fraud-image
+    ```
+
+## Checking docker endpoints
+1. Access `http://127.0.0.1:8000/`, you will see a message like this `"Online Fraud Classifier is all ready to go!"`
+2. A file called `main.log` will be created automatically inside the container. As we have enable Volume settings we can look at the local directory (`\\wsl$\docker-desktop-data\data\docker\volumes\app_log`)
+2. Access `http://127.0.0.1:8000/docs`, the browser will display something like this:
+
+    ![FastAPI Docs](./docs/api_docs.png)
+
+3. Try running the classify endpoint by providing some data:
+	
+    **Request body : FRAUD CASES** 
+    ```bash
+    {
+    "type": 4, 
+    "amount": 10000000,
+    "oldbalanceOrg": 12930418.44,
+    "newbalanceOrg": 2930418.44
+    }
+    ```
+    You will have an error, because you have to regenerate the model.
+    
+    ![Error Model not found](./docs/app_only_ERROR_first_time.png)
+    
+    
+     try running the Train_model endpoint
+
+    ![Train Model](./docs/app_only_train_model.png)
+
+4. Try again the classify endpoint by providing some data:
+
+    **Request body : NO FRAUD CASES** 
+
+    ```bash
+    {
+    "type": 3, 
+    "amount": 87541.63,
+    "oldbalanceOrg": 1925591.38,
+    "newbalanceOrg": 2013133.01
+    }
+    ```
+
+    ![API TEST NO Fraud Case](./docs/app_only_NOFRAUD_Case.png)
+
+    **Request body : FRAUD CASES** 
+
+    ```bash
+    {
+    "type": 4, 
+    "amount": 10000000,
+    "oldbalanceOrg": 12930418.44,
+    "newbalanceOrg": 2930418.44
+    }
+    ```
+     ![API TEST Fraud Case](./docs/app_only_FRAUD_Case.png)
 
 
+#### Opening the logs
+
+1. Run the next command
+
+    ```bash
+    docker exec -it fraud-image bash
+    ```
+
+    Output:
+
+    ```bash
+    root@53d78fb5223f:/# 
+    ```
+
+2. Check the existing files:
+
+    ```bash
+    ls
+    ```
+3. Open the file `main.log` and inspect the logs with this command:
+
+    ```bash
+    vim main.log
+    ```
+
+    ![VIM commands](./docs/app_only_fraud_vim_commands.png)
+
+    ![LOG file from container](./docs/app_only_VIM_LOGFILE.png)
+
+
+4. Copy the logs to the root folder:
+
+    ```bash
+    docker cp fraud-image:/logs/main.log .
+    ```
+
+    ![Copy log to local](./docs/app_only_copy_log_to_local.png)
+
+
+#### Delete container and image
+
+* Stop the container:
+
+    ```bash
+    docker stop fraud-image
+    ```
+* Verify it was deleted
+
+    ```bash
+    docker ps -a
+    ```
+
+* Delete the image
+
+    ```bash
+    docker rmi fraud-image
+    ```
+
+Output:
+
+   ![delete docker image](./docs/app_only_delete_image.png)
+
+
+### Complete deployment of all containers with Docker Compose and usage
+
+#### Create the network
+
+First, create the network AIService by running this command:
+
+    ```bash
+    docker network create AIservice
+    ```
+
+Next, create the local volumes to be referenced on the compose script:
+
+    ```bash
+    docker volume create frontend_log
+    docker volume create app_log
+    ```
+
+
+#### Run Docker Compose
+
+* Ensure you are in the directory where the docker-compose.yml file is located
+
+* Run the next command to start the App and Frontend APIs
+
+    ```bash
+    docker-compose -f docker-compose.yml up --build
+    ```
+
+    You will see something like this:
+
+    ```bash
+        [+] Building 5.7s (3/3)
+    => [app internal] load .dockerignore                                                                              0.0s
+    [+] Building 21.3s (16/16) FINISHED
+    => [app internal] load .dockerignore                                                                              0.0s
+    => => transferring context: 2B                                                                                    0.0s
+    => [app internal] load build definition from Dockerfile                                                           0.0s
+    => => transferring dockerfile: 281B                                                                               0.0se
+    => [frontend internal] load metadata for docker.io/library/python:3.11-slim                                       6.1s
+    => [app internal] load build context                                                                              0.0s
+    => => transferring context: 2.01kB                                                                                0.0s
+    => CACHED [frontend 1/5] FROM docker.io/library/python:3.11-slim@sha256:17d62d681d9ecef20aae6c6605e9cf83b0ba3dc2  0.0s
+    => CACHED [app 2/5] COPY . .                                                                                      0.0s
+    => CACHED [app 3/5] RUN pip3 install --no-cache-dir -r requirements.txt                                           0.0s
+    => CACHED [app 4/5] RUN apt-get update && apt-get install -y vim                                                  0.0s
+    => [app] exporting to image                                                                                       0.0s
+    => => exporting layers                                                                                            0.0s
+    => => writing image sha256:af7f8e45bfdcf8d349977b143f747dd530ac52923307b3bc8cc951814c8364d0                       0.0s
+    => => naming to docker.io/library/mlops_proj2-app                                                                 0.0s
+    => [frontend internal] load build definition from Dockerfile                                                      0.0s
+    => => transferring dockerfile: 296B                                                                               0.0s
+    => [frontend internal] load .dockerignore                                                                         0.0s
+    => => transferring context: 2B                                                                                    0.0s
+    => [frontend internal] load build context                                                                         0.0s
+    => => transferring context: 2.34kB                                                                                0.0s
+    => [frontend 2/5] COPY . .                                                                                        0.0s
+    => [frontend 3/5] RUN pip3 install --no-cache-dir -r requirements.txt                                             7.8s
+    => [frontend 4/5] RUN apt-get update && apt-get install -y vim                                                    6.5s
+    => [frontend] exporting to image                                                                                  0.4s
+    => => exporting layers                                                                                            0.4s
+    => => writing image sha256:f6b024d2c2c14f4a34e790e60dcf3c90e01d7be569a676e82ccd699f01add8ff                       0.0s
+    => => naming to docker.io/library/mlops_proj2-frontend                                                            0.0s
+    [+] Running 2/0
+    ✔ Container mlops_proj2-app-1       Created                                                                       0.0s
+    ✔ Container mlops_proj2-frontend-1  Created                                                                       0.0s
+    Attaching to mlops_proj2-app-1, mlops_proj2-frontend-1
+    mlops_proj2-app-1       | INFO:     Will watch for changes in these directories: ['/']
+    mlops_proj2-app-1       | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    mlops_proj2-app-1       | INFO:     Started reloader process [1] using StatReload
+    mlops_proj2-frontend-1  | INFO:     Will watch for changes in these directories: ['/']
+    mlops_proj2-frontend-1  | INFO:     Uvicorn running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+    mlops_proj2-frontend-1  | INFO:     Started reloader process [1] using StatReload
+    mlops_proj2-frontend-1  | INFO:     Started server process [8]
+    mlops_proj2-frontend-1  | INFO:     Waiting for application startup.
+    mlops_proj2-frontend-1  | INFO:     Application startup complete.
+    mlops_proj2-app-1       | INFO:     Started server process [8]
+    mlops_proj2-app-1       | INFO:     Waiting for application startup.
+    mlops_proj2-app-1       | INFO:     Application startup complete.
+    ```
+
+#### Checking endpoints in Frontend
+
+1. Access `http://127.0.0.1:3000/`, and you will see a message like this `"Front End  Fraud Classifier is all ready to go!"`
+2. A file called `main.log` will be created automatically inside the container (volume: `frontend_log`). We will inspect it below.
+3. Access `http://127.0.0.1:3000/docs`, the browser will display something like this:
+    ![Frontend Docs](docs/compose_docs.png)
+
+4. Try running the following predictions with the endpoint `classify` by writing the following values:
+    * **Prediction 1**  
+        Request body
+
+        ```bash
+        {
+        "type": 4, 
+        "amount": 10000000,
+        "oldbalanceOrg": 12930418.44,
+        "newbalanceOrg": 2930418.44
+        }
+
+        ```
+
+        Response body
+        The output will be:
+
+     ![Frontend error](docs/compose_error_first_classify.png)
+
+5. Run the Train_model endpoint
+
+    ![Compose_create_model](docs/compose_create_model.png)
+
+6. Again, try running the following predictions with the endpoint `classify` by writing the following values:
+    * **Prediction 1 Fraud Case**  
+        Request body
+
+        ```bash
+        {
+        "type": 4, 
+        "amount": 10000000,
+        "oldbalanceOrg": 12930418.44,
+        "newbalanceOrg": 2930418.44
+        }
+
+        ```
+    ![Compose_fraud_case](docs/Compose_fraud_case.png)
+
+    * **Prediction 2 No Fraud**  
+        Request body
+
+        ```bash
+        {
+        "type": 1, 
+        "amount": 123974.95,
+        "oldbalanceOrg": 27160.24,
+        "newbalanceOrg": 0
+        }
+        ```
+    ![Compose_nofraud_case](docs/compose_nofraud_case.png)
+
+
+#### Opening the logs in Frontend
+
+Open a new terminal, and execute the following commands:
+
+1. Copy the `frontend` logs to the root folder:
+
+    ```bash
+    docker cp frontend-1:/logs/frontend.log .
+    ```
+
+    Output:
+
+    ```bash
+    Successfully copied 3.12kB to .../frontend/.
+    ```
+OR
+   you can look at the local file created:
+
+   ![Compose_local_file_location](docs/Compose_local_file_location.png)       
+
+
+2. You can inspect the logs and see something similar to this:
+    ```
+    2023-08-24 00:41:16,164:Main_TEST:logging:INFO:Checking health: "Online Fraud Classifier is all ready to go!"
+    2023-08-24 00:41:56,166:Main_TEST:logging:DEBUG:Incoming input in the front end: {'type': 4, 'amount': 10000000, 'oldbalanceOrg': 12930418.44, 'newbalanceOrg': 2930418.44}
+    2023-08-24 00:41:56,175:Main_TEST:logging:DEBUG:Prediction: "Compiled model NOT FOUND, please use the appropiate endpoint to regenerate the model '/\\models\\DecisionTree_output.pkl' "
+    2023-08-24 00:45:06,659:Main_TEST:logging:INFO:ACTION->Front End Fraud Classifier is all ready to go!
+    2023-08-24 01:04:08,982:Main_TEST:logging:INFO:Training model proccess...START
+    2023-08-24 01:05:25,532:Main_TEST:logging:INFO:Training model process ENDED. Result: "Trained model ready to go!"
+    2023-08-24 01:10:03,883:Main_TEST:logging:DEBUG:Incoming input in the front end: {'type': 4, 'amount': 10000000, 'oldbalanceOrg': 12930418.44, 'newbalanceOrg': 2930418.44}
+    2023-08-24 01:10:03,888:Main_TEST:logging:DEBUG:Prediction: "Resultado predicciÃ³n: [1]"
+    ```
+
+    ![Compose_local_file_view](docs/Compose_local_file_view.png)    
+
+#### Opening the logs in App
+
+Open a new terminal, and execute the following commands:
+
+1. Copy the `app` logs to the root folder:
+
+    ```bash
+    docker cp app-1:/logs/main.log .
+    ```
+
+    Output:
+
+    ```bash
+    Successfully copied 2.56kB to .../logs/.
+    ```
+OR
+   you can look at the local file created:
+
+   ![Compose_local_file_location](docs/Compose_local_file_location.png)       
+
+
+2. You can inspect the logs and see something similar to this:
+
+    ```bash
+    2023-08-24 00:39:34,020:API Controller:logging:INFO:ACTION->Online Fraud Classifier is all ready to go!
+    2023-08-24 00:41:16,163:API Controller:logging:INFO:ACTION->Online Fraud Classifier is all ready to go!
+    2023-08-24 00:41:56,173:API Controller:logging:CRITICAL:Compiled model NOT FOUND, please use the appropiate endpoint to regenerate the model '/\models\DecisionTree_output.pkl' 
+    2023-08-24 01:04:08,984:API Controller:logging:DEBUG:ACTION -> Train model 
+    2023-08-24 01:05:25,501:API Controller:logging:DEBUG:ACTION -> Train model saved in ['/\\models\\DecisionTree_output.pkl']
+    2023-08-24 01:10:03,887:API Controller:logging:DEBUG:Classification-> INPUT [
+                            type: 4.0
+                        amount: 10000000.0 
+                    oldbalanceorg: 12930418.44 
+                    newbalanceorg: 2930418.44]
+                        Result-> [1]
+    ```
+
+### Delete the containers with Docker Compose
+
+1. Stop the containers that have previously been launched with `docker-compose up`.
+
+    ```bash
+    docker-compose -f docker-compose.yml stop
+    ```
+
+    Output:
+
+    ```bash
+    [+] Stopping 2/2
+    ✔ Container mlops_proj2-frontend-1  Stopped                                                                       0.7s
+    ✔ Container mlops_proj2-app-1       Stopped                         0.4s 
+    ```
+
+2. Delete the containers stopped from the stage.
+
+    ```bash
+    docker-compose -f docker-compose.yml rm
+    ```
+
+    Output:
+
+    ```bash
+    ? Going to remove mlops_proj2-frontend-1, mlops_proj2-app-1 Yes
+    [+] Removing 2/0
+    ✔ Container mlops_proj2-app-1       Removed                                                                       0.1s
+    ✔ Container mlops_proj2-frontend-1  Removed                      0.0s 
+    ```
 ## Directory structure & Cookiecutter
 1. You will find a structure provided by Cookiecutter
 More info: [cookiecutter](https://cookiecutter.readthedocs.io/)
 
+
+### Information sources
+
+* [MNA - Master in Applied Artificial Intelligence](https://learn.maestriasydiplomados.tec.mx/pos-programa-mna-v-)
+* [ITESM MLOps Course GitHub Repository](https://github.com/carloslme/itesm-mlops)
+
+* **Credits**
+    * Teacher: Carlos Mejia <carloslmescom@gmail.com>
+    * Student: Francisco Torres <paco.zenon@gmail.com>
+
+AUGUST 2023 

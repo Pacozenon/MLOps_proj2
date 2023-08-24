@@ -12,10 +12,10 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from sklearn.model_selection import train_test_split
-
-from app.load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
-from app.train.train_data import FraudDetectionPipeline, Retrieve_Files
+from train.train_data import FraudDetectionPipeline, Retrieve_Files
 from utilities.logging import MyLogger
+
+# Define file locations
 
 # ZIP URL
 # IT's a big file!! ZIP (180Mb) CSV(480Mb)
@@ -36,10 +36,19 @@ RETRIEVED_DATA = (
 )
 
 
-SEED_SPLIT = 404
 TRAIN_DATA_FILE = DATASETS_DIR + "train.csv"
 TEST_DATA_FILE = DATASETS_DIR + "test.csv"
 
+TRAINED_MODEL_DIR = "./models/"
+PIPELINE_NAME = "DecisionTree"
+PIPELINE_SAVE_FILE = f"{PIPELINE_NAME}_output.pkl"
+
+# Persist/Save model
+SAVE_FILE_NAME = f"{PIPELINE_SAVE_FILE}"
+SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
+
+
+# Define attributes to work with
 
 TARGET = "isFraud"
 FEATURES = ["type", "amount", "oldbalanceOrg", "newbalanceOrig"]
@@ -60,18 +69,7 @@ SELECTED_FEATURES = [
     "newbalanceOrig",
 ]
 SELECTED_FEATURES = ["type", "amount", "oldbalanceOrg", "newbalanceOrig"]
-
-SEED_MODEL = 725
-
-# SELECTED_FEATURES = ["type", "amount", "oldbalanceOrg", "newbalanceOrig"]
-
-TRAINED_MODEL_DIR = "./models/"
-PIPELINE_NAME = "DecisionTree"
-PIPELINE_SAVE_FILE = f"{PIPELINE_NAME}_output.pkl"
-
-# Persist/Save model
-SAVE_FILE_NAME = f"{PIPELINE_SAVE_FILE}"
-SAVE_PATH = TRAINED_MODEL_DIR + SAVE_FILE_NAME
+SEED_MODEL = 404
 
 
 if __name__ == "__main__":

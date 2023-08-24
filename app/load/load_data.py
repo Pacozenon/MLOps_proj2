@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import sys
 from io import BytesIO
 from urllib.request import urlopen
 from zipfile import ZipFile
@@ -9,8 +10,14 @@ import joblib
 import numpy as np
 import pandas as pd
 import sklearn
-
 from utilities.logging import MyLogger
+
+# root folder
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.append(parent_dir)
 
 
 class RetrieveURLZIP_ExtractFile:

@@ -1,6 +1,7 @@
 # from train.train_data import FraudDetectionPipeline
 import logging
 import os
+import sys
 
 from load.load_data import DataRetriever, RetrieveURLZIP_ExtractFile
 from preprocess.preprocess_data import Change_TransactionType
@@ -10,8 +11,15 @@ from sklearn.pipeline import Pipeline
 
 # from sklearn.preprocessing import MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
-
 from utilities.logging import MyLogger
+
+# root folder
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.append(parent_dir)
+
 
 # ZIP URL
 # IT's a big file!! ZIP (180Mb) CSV(480Mb)

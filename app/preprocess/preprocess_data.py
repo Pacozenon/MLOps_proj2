@@ -1,12 +1,19 @@
 import logging
-import re
+import os
+import sys
 
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_array
-
 from utilities.logging import MyLogger
+
+# root folder
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.append(parent_dir)
 
 
 class MissingIndicator(BaseEstimator, TransformerMixin):

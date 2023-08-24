@@ -6,11 +6,10 @@ import joblib
 import pandas as pd
 from classifier.classifier import ModelClassifier
 from fastapi import FastAPI
+from models.models import OnlineTX
 from sklearn.model_selection import train_test_split
 from starlette.responses import JSONResponse
 from train.train_data import FraudDetectionPipeline, Retrieve_Files
-
-from models.models import OnlineTX
 from utilities.logging import MyLogger
 
 # root folder
@@ -19,6 +18,7 @@ from utilities.logging import MyLogger
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
 sys.path.append(parent_dir)
+sys.path.append(current_dir)
 
 ROOT_DIRECTORY = parent_dir  # "/Users/francisco.torres/Documents/GitHub/MLOps_project/Refactor/mlops_project/mlops_project"
 APP_DIRECTORY = current_dir
