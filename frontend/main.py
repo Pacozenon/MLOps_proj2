@@ -4,7 +4,6 @@ import sys
 
 import requests
 from fastapi import Body, FastAPI
-
 from utilities.logging import MyLogger
 
 # getting the name of the directory
@@ -28,6 +27,15 @@ app = FastAPI()
 # ML model prediction function using the prediction API request
 def predict_fraud(input):
     url3 = "http://app.docker:8000/predict"
+
+    response = requests.post(url3, json=input)
+    response = response.text
+
+    return response
+
+
+def predict_fraud_KNN(input):
+    url3 = "http://appknn.docker:8001/predictKNN"
 
     response = requests.post(url3, json=input)
     response = response.text
@@ -63,6 +71,25 @@ async def v1_healhcheck():
 @app.get("/train_model", status_code=200)
 def train_model():
     url3 = "http://app.docker:8000/train_model"
+    logger.info("Training model proccess...START")
+    response = requests.request("GET", url3)
+    response = response.text
+    logger.info(f"Training model process ENDED. Result: {response}")
+
+    return response
+
+
+@app.post("/classifyKNN")
+def classifyKNN(payload: dict = Body(...)):
+    logger.debug(f"Incoming input in the front end: {payload}")
+    response = predict_fraud_KNN(payload)
+    logger.debug(f"Prediction: {response}")
+    return {"response": response}
+
+
+@app.get("/train_modelKNN", status_code=200)
+def train_modelKNN():
+    url3 = "http://appKNN.docker:8001/train_modelKNN"
     logger.info("Training model proccess...START")
     response = requests.request("GET", url3)
     response = response.text

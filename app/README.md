@@ -1,3 +1,3 @@
-# REST API - Frontend
+# REST API - Backend DecisionTree Model
 
-This REST API is a frontend and works as a load-balancer to serve multiple models, by pointing the predictions to different model versions.
+This REST API is a backend to have access to a Decision Tree Model Prediction

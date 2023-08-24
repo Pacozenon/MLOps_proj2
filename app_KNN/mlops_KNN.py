@@ -29,6 +29,14 @@ ZIPURL = "https://www.googleapis.com/drive/v3/files/1_rd4Jy9bbpjCyl92zqBor5bKQgD
 CSVFILE = "PS_20174392719_1491204439457_log.csv"
 
 # refactored folder
+# REFACTORED_DIRECTORY = "/Users/francisco.torres/Documents/GitHub/MLOps_proj2"
+DATASETS_DIR = "./data/"  # Directory where data will be unzip.
+
+RETRIEVED_DATA = (
+    "retrieved_data.csv"  # File name for the retrieved data without irrelevant columns
+)
+
+
 # Add the parent directory to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
@@ -38,10 +46,7 @@ sys.path.append(current_dir)
 ROOT_DIRECTORY = parent_dir  # "/Users/francisco.torres/Documents/GitHub/MLOps_project/Refactor/mlops_project/mlops_project"
 APP_DIRECTORY = current_dir
 
-
-REFACTORED_DIRECTORY = APP_DIRECTORY
 DATASETS_DIR = "./data/"  # Directory where data will be unzip.
-
 RETRIEVED_DATA = (
     "retrieved_data.csv"  # File name for the retrieved data without irrelevant columns
 )
@@ -51,7 +56,7 @@ TRAIN_DATA_FILE = DATASETS_DIR + "train.csv"
 TEST_DATA_FILE = DATASETS_DIR + "test.csv"
 
 TRAINED_MODEL_DIR = "./models/"
-PIPELINE_NAME = "DecisionTree"
+PIPELINE_NAME = "KNN"
 PIPELINE_SAVE_FILE = f"{PIPELINE_NAME}_output.pkl"
 
 # Persist/Save model
@@ -91,7 +96,7 @@ if __name__ == "__main__":
     # Change location to the refactored directory
     # print(os.getcwd())
     logfile.info(f"Current directory : {os.getcwd()}")
-    os.chdir(REFACTORED_DIRECTORY)
+    os.chdir(APP_DIRECTORY)
     print(os.getcwd())
     logfile.info(f"Refactored directory : {os.getcwd()}")
 
@@ -120,16 +125,16 @@ if __name__ == "__main__":
     )
 
     # Fit the model
-    logfile.debug("Model fitting Decision Tree")
-    DecisionTreeModel = fraud_data_pipeline.fit_DecisionTree(X_train, y_train)
+    logfile.debug("Model fitting KNN")
+    KNNmodel = fraud_data_pipeline.fit_KNN(X_train, y_train)
 
-    result = joblib.dump(DecisionTreeModel, SAVE_PATH)
+    result = joblib.dump(KNNmodel, SAVE_PATH)
     logfile.info(f"Model saved in {result}")
 
     # calculate metrics: roc-auc / accuracy /confusion matrix / classification_report  over the Test dataset
     X_test = fraud_data_pipeline.PIPELINE.fit_transform(X_test)
-    class_pred = DecisionTreeModel.predict(X_test)
-    proba_pred = DecisionTreeModel.predict_proba(X_test)[:, 1]
+    class_pred = KNNmodel.predict(X_test)
+    proba_pred = KNNmodel.predict_proba(X_test)[:, 1]
     print(f"test roc-auc : {roc_auc_score(y_test, proba_pred)}")
     #  test roc-auc : 0.9297945977633371
     logfile.info(f"Testing model ROC-AUC:{roc_auc_score(y_test, proba_pred)}")
@@ -174,7 +179,7 @@ if __name__ == "__main__":
             [2, 2625.76, 29786, 27160.24],
         ]
     ).astype(np.float32)
-    logfile.debug(trained_model.predict(test_data, check_input=False))
+    logfile.debug(trained_model.predict(test_data))
 
     # FRAUD CASES (1)
     logfile.debug("Fraud cases -- Expected [1's]")
@@ -189,4 +194,4 @@ if __name__ == "__main__":
             [1, 132842.64, 4499.08, 0],
         ]
     ).astype(np.float32)
-    logfile.debug(trained_model.predict(test_data, check_input=False))
+    logfile.debug(trained_model.predict(test_data))

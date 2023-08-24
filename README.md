@@ -548,6 +548,7 @@ Next, create the local volumes to be referenced on the compose script:
 ```bash
 docker volume create frontend_log
 docker volume create app_log
+docker volume create knn_log
 ```
 
 
@@ -639,9 +640,13 @@ docker volume create app_log
 
      ![Frontend error](docs/compose_error_first_classify.png)
 
-5. Run the Train_model endpoint
+5A. Run the Train_model endpoint
 
     ![Compose_create_model](docs/compose_create_model.png)
+
+5B. Run the Train_modelKNN endpoint
+
+    ![knn_create_model](docs/knn_create_model.png)
 
 6. Again, try running the following predictions with the endpoint `classify` by writing the following values:
     * **Prediction 1 Fraud Case**  
@@ -670,6 +675,34 @@ docker volume create app_log
         }
         ```
     ![Compose_nofraud_case](docs/compose_nofraud_case.png)
+
+7. Use the KNN Model try running the following predictions with the endpoint `classifyKNN` by writing the following values:
+    * **Prediction 1 Fraud Case**  
+        Request body
+
+        ```bash
+        {
+        "type": 4, 
+        "amount": 10000000,
+        "oldbalanceOrg": 12930418.44,
+        "newbalanceOrg": 2930418.44
+        }
+
+        ```
+    ![KNN_fraud_case](docs/knn_fraud_case.png)
+
+    * **Prediction 2 No Fraud**  
+        Request body
+
+        ```bash
+        {
+        "type": 1, 
+        "amount": 123974.95,
+        "oldbalanceOrg": 27160.24,
+        "newbalanceOrg": 0
+        }
+        ```
+    ![KNN_nofraud_case](docs/knn_nofraud_case.png)
 
 
 #### Opening the logs in Frontend

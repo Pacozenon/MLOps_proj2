@@ -1,7 +1,17 @@
 version: "3.7"
 
 services:
-  app:
+ app_KNN:
+    build: appknn
+    ports:
+      - 8001:8001
+    volumes:
+      - knn_log:/logs
+    networks:
+      AIservice:
+        aliases:
+          - appknn.docker
+ app:
     build: app
     ports:
       - 8000:8000
@@ -12,7 +22,7 @@ services:
         aliases:
           - app.docker
 
-  frontend:
+ frontend:
     build: frontend
     ports:
       - 3000:3000
@@ -28,6 +38,8 @@ services:
 volumes:
   app_log:
     external: true
+  knn_log:
+    external: true    
   frontend_log:
     external: true
 
