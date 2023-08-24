@@ -83,8 +83,19 @@ In other words, knowledge is integrated regarding the learning of good software 
 
 * Since we have already have on the baseline a good recall(0.95) and F1-Score(0.89) metrics over the FRAUD cases, we will note explore another methods. We will explore another method only to show frontend + multiple predictors  Docker compose 
 
-
 * Also we will not make an intensive feature analysis nor feature engineering.
+
+
+Links to experiments like notebooks
+You can find the Titanic experiments here:
+
+[1-exploring-data.ipynb] (https://www.kaggle.com/code/nehahatti/online-payments-fraud-detection-project)
+[2-organizing-ideas.ipynb](https://github.com/Pacozenon/MLOps_project/blob/main/1-Baseline/online-payments-fraud-detection-project.ipynb)
+[3-create-convenient-classes.ipynb] (C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2\docs\classes_pipeline.ipynb)
+[4_creating_pipeline.ipynb] ()
+[5_refactored_fraud_detection.ipynb] (https://github.com/Pacozenon/MLOps_project/tree/main/Refactor/mlops_project/mlops_project)
+
+
 
 
 ## Online Payments Fraud Detection
@@ -261,7 +272,7 @@ weighted avg       1.00      1.00      1.00   1272524
 1. Access `http://127.0.0.1:8000/`, you will see a message like this `"Online Fraud Classifier is all ready to go!"`
 2. Access `http://127.0.0.1:8000/docs`, the browser will display something like this:
 
-    ![FastAPI Docs](./docs/api_docs.png)
+    ![FastAPI Docs](./docs/imgs/api_docs.png)
 
 3. Try running the classify endpoint by providing some data:
 	
@@ -274,7 +285,7 @@ weighted avg       1.00      1.00      1.00   1272524
     "newbalanceOrg": 2930418.44
     }
     ```
-    ![API TEST Fraud Case](./docs/api_fraud_case.png)
+    ![API TEST Fraud Case](./docs/imgs/api_fraud_case.png)
 
     **Request body : NO FRAUD CASES** 
     ```bash
@@ -285,16 +296,16 @@ weighted avg       1.00      1.00      1.00   1272524
     "newbalanceOrg": 2013133.01
     }
     ```
-    ![API TEST NO Fraud Case](./docs/api_nofraud_case.png)
+    ![API TEST NO Fraud Case](./docs/imgs/api_nofraud_case.png)
 
 3. Try running the Train endpoint:
 
-   ![API Train Model endpoint](./docs/API_Train.png)
+   ![API Train Model endpoint](./docs/imgs/API_Train.png)
 
 
 If you open the terminal you will something like this:
 
-   ![API Train Model Terminal output](./docs/API_TrainModel.png)
+   ![API Train Model Terminal output](./docs/imgs/API_TrainModel.png)
 
 # PART 2 
 
@@ -328,9 +339,9 @@ To use the class, use
 
 Logging in action:
 
-![API log file](./docs/api_log.png)
+![API log file](./docs/imgs/api_log.png)
 
-![mlops_project log file](./docs/main_log.png)
+![mlops_project log file](./docs/imgs/main_log.png)
 
 ## Individual deployment of the API with Docker and usage
 
@@ -342,7 +353,7 @@ Logging in action:
     ```bash
     docker build -t fraud-image ./app/
     ```
-  ![Output docker create image](./docs/app_only_create_image.png)
+  ![Output docker create image](./docs/imgs/app_only_create_image.png)
 
 * Inspect the image created by running this command:
 
@@ -350,7 +361,7 @@ Logging in action:
     docker images
     ```
 
-    ![Output show docker images](./docs/app_only_show_image.png)
+    ![Output show docker images](./docs/imgs/app_only_show_image.png)
 
 #### Use Volume capabilities
 
@@ -420,7 +431,7 @@ Note: In windows you can locate this folder in this path:
 2. A file called `main.log` will be created automatically inside the container. As we have enable Volume settings we can look at the local directory (`\\wsl$\docker-desktop-data\data\docker\volumes\app_log`)
 2. Access `http://127.0.0.1:8000/docs`, the browser will display something like this:
 
-    ![FastAPI Docs](./docs/api_docs.png)
+    ![FastAPI Docs](./docs/imgs/api_docs.png)
 
 3. Try running the classify endpoint by providing some data:
 	
@@ -435,12 +446,12 @@ Note: In windows you can locate this folder in this path:
     ```
     You will have an error, because you have to regenerate the model.
     
-    ![Error Model not found](./docs/app_only_ERROR_first_time.png)
+    ![Error Model not found](./docs/imgs/app_only_ERROR_first_time.png)
     
     
      try running the Train_model endpoint
 
-    ![Train Model](./docs/app_only_train_model.png)
+    ![Train Model](./docs/imgs/app_only_train_model.png)
 
 4. Try again the classify endpoint by providing some data:
 
@@ -455,7 +466,7 @@ Note: In windows you can locate this folder in this path:
     }
     ```
 
-    ![API TEST NO Fraud Case](./docs/app_only_NOFRAUD_Case.png)
+    ![API TEST NO Fraud Case](./docs/imgs/app_only_NOFRAUD_Case.png)
 
     **Request body : FRAUD CASES** 
 
@@ -467,7 +478,7 @@ Note: In windows you can locate this folder in this path:
     "newbalanceOrg": 2930418.44
     }
     ```
-     ![API TEST Fraud Case](./docs/app_only_fraud_Case.png)
+     ![API TEST Fraud Case](./docs/imgs/app_only_fraud_Case.png)
 
 
 #### Opening the logs
@@ -495,9 +506,9 @@ Note: In windows you can locate this folder in this path:
     vim main.log
     ```
 
-    ![VIM commands](./docs/app_only_fraud_vim_commands.png)
+    ![VIM commands](./docs/imgs/app_only_fraud_vim_commands.png)
 
-    ![LOG file from container](./docs/app_only_VIM_LOGFILE.png)
+    ![LOG file from container](./docs/imgs/app_only_VIM_LOGFILE.png)
 
 
 4. Copy the logs to the root folder:
@@ -506,7 +517,7 @@ Note: In windows you can locate this folder in this path:
     docker cp fraud-image:/logs/main.log .
     ```
 
-    ![Copy log to local](./docs/app_only_copy_log_to_local.png)
+    ![Copy log to local](./docs/imgs/app_only_copy_log_to_local.png)
 
 
 #### Delete container and image
@@ -530,7 +541,7 @@ Note: In windows you can locate this folder in this path:
 
 Output:
 
-   ![delete docker image](./docs/app_only_delete_image.png)
+   ![delete docker image](./docs/imgs/app_only_delete_image.png)
 
 
 ## Complete deployment of all containers with Docker Compose and usage
@@ -564,7 +575,7 @@ docker volume create knn_log
 
     You will see something like this:
 
-    ![compose command](./docs/KNN_compose_comm.png)
+    ![compose command](./docs/imgs/KNN_compose_comm.png)
 
 #### Checking endpoints in Frontend
 
