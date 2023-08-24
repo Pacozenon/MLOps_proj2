@@ -332,7 +332,7 @@ Logging in action:
 
 ![mlops_project log file](./docs/main_log.png)
 
-### Individual deployment of the API with Docker and usage
+## Individual deployment of the API with Docker and usage
 
 #### Build the image
 
@@ -533,7 +533,7 @@ Output:
    ![delete docker image](./docs/app_only_delete_image.png)
 
 
-### Complete deployment of all containers with Docker Compose and usage
+## Complete deployment of all containers with Docker Compose and usage
 
 #### Create the network
 
@@ -779,7 +779,7 @@ OR
 More info: [cookiecutter](https://cookiecutter.readthedocs.io/)
 
 
-### Information sources
+## Information sources
 
 * [MNA - Master in Applied Artificial Intelligence](https://learn.maestriasydiplomados.tec.mx/pos-programa-mna-v-)
 * [ITESM MLOps Course GitHub Repository](https://github.com/carloslme/itesm-mlops)
