@@ -594,11 +594,11 @@ docker volume create knn_log
 
 5A. Run the Train_model endpoint
 
-    ![Compose_create_model](docs/compose_create_model.png)
+  ![Compose_create_model](docs/compose_create_model.png)
 
 5B. Run the Train_modelKNN endpoint
 
-    ![knn_create_model](docs/knn_model_created.png)
+  ![knn_create_model](docs/knn_model_created.png)
 
 6. Again, try running the following predictions with the endpoint `classify` by writing the following values:
     * **Prediction 1 Fraud Case**  
