@@ -467,7 +467,7 @@ Note: In windows you can locate this folder in this path:
     "newbalanceOrg": 2930418.44
     }
     ```
-     ![API TEST Fraud Case](./docs/app_only_FRAUD_Case.png)
+     ![API TEST Fraud Case](./docs/app_only_fraud_Case.png)
 
 
 #### Opening the logs
