@@ -587,7 +587,7 @@ docker volume create knn_log
 1. Access `http://127.0.0.1:3000/`, and you will see a message like this `"Front End  Fraud Classifier is all ready to go!"`
 2. A file called `main.log` will be created automatically inside the container (volume: `frontend_log`). We will inspect it below.
 3. Access `http://127.0.0.1:3000/docs`, the browser will display something like this:
-    ![Frontend Docs](docs/frontend_KNN.png)
+    ![Frontend Docs](docs/imgs/frontend_KNN.png)
 
 Now we have a frontend and two API serving two different models
 
@@ -608,15 +608,15 @@ Now we have a frontend and two API serving two different models
         Response body
         The output will be:
 
-     ![Frontend error](docs/compose_error_first_classify.png)
+     ![Frontend error](docs/imgs/compose_error_first_classify.png)
 
 5A. Run the Train_model endpoint
 
-  ![Compose_create_model](docs/compose_create_model.png)
+  ![Compose_create_model](docs/imgs/compose_create_model.png)
 
 5B. Run the Train_modelKNN endpoint
 
-  ![knn_create_model](docs/knn_model_created.png)
+  ![knn_create_model](docs/imgs/knn_model_created.png)
 
 6. Again, try running the following predictions with the endpoint `classify` by writing the following values:
     * **Prediction 1 Fraud Case**  
@@ -631,7 +631,7 @@ Now we have a frontend and two API serving two different models
         }
 
         ```
-    ![Compose_fraud_case](docs/compose_fraud_case.png)
+    ![Compose_fraud_case](docs/imgs/compose_fraud_case.png)
 
     * **Prediction 2 No Fraud**  
         Request body
@@ -644,7 +644,7 @@ Now we have a frontend and two API serving two different models
         "newbalanceOrg": 0
         }
         ```
-    ![Compose_nofraud_case](docs/compose_nofraud_case.png)
+    ![Compose_nofraud_case](docs/imgs/compose_nofraud_case.png)
 
 7. Use the KNN Model try running the following predictions with the endpoint `classifyKNN` by writing the following values:
     * **Prediction 1 Fraud Case**  
@@ -659,7 +659,7 @@ Now we have a frontend and two API serving two different models
         }
 
         ```
-    ![KNN_fraud_case](docs/knn_fraud_case.png)
+    ![KNN_fraud_case](docs/imgs/knn_fraud_case.png)
 
     * **Prediction 2 No Fraud**  
         Request body
@@ -672,7 +672,7 @@ Now we have a frontend and two API serving two different models
         "newbalanceOrg": 0
         }
         ```
-    ![KNN_nofraud_case](docs/knn_nofraud_case.png)
+    ![KNN_nofraud_case](docs/imgs/knn_nofraud_case.png)
 
 
 #### Opening the logs in Frontend
@@ -693,7 +693,7 @@ Open a new terminal, and execute the following commands:
 OR
    you can look at the local file created:
 
-   ![Compose_local_file_location](docs/knn_locations.png)       
+   ![Compose_local_file_location](docs/imgs/knn_locations.png)       
 
 
 2. You can inspect the logs and see something similar to this:
@@ -708,7 +708,7 @@ OR
     2023-08-24 01:10:03,888:Main_TEST:logging:DEBUG:Prediction: "Resultado predicciÃ³n: [1]"
     ```
 
-    ![Compose_local_file_view](docs/compose_local_file_view.png)    
+    ![Compose_local_file_view](docs/imgs/compose_local_file_view.png)    
 
 #### Opening the logs in App
 
@@ -728,7 +728,7 @@ Open a new terminal, and execute the following commands:
 OR
    you can look at the local file created:
 
-   ![Compose_local_file_location](docs/compose_local_file_location.png)       
+   ![Compose_local_file_location](docs/imgs/compose_local_file_location.png)       
 
 
 2. You can inspect the logs and see something similar to this:
