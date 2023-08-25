@@ -101,6 +101,9 @@ You can find the Online Detection fraud experiments here:
 [5_refactored_fraud_detection.ipynb](https://github.com/Pacozenon/MLOps_project/tree/main/Refactor/mlops_project/mlops_project)
 
 
+## IMPORTANT NOTE:
+   ### THIS REPOSITORY DOES NOT INCLUDE THE DATA FOLDER. This notebook requires the execution of the /train_model and /train_modelKNN endpoints located on the [Complete deployment of all containers with Docker Compose and usage](https://github.com/Pacozenon/MLOps_proj2#complete-deployment-of-all-containers-with-docker-compose-and-usage) section. This will download and unzip the required file (480Mb) in order to train and create the models (*.pkl) on the /models folders located on each container.
+
 
 
 ## Online Payments Fraud Detection
@@ -127,6 +130,7 @@ Part III
     Logging
     API deployment with Docker
     Frontend-Backend Architecture with Docker Compose
+
 
 ## Setup
 ### Python version, virtual environment and packages to install
@@ -551,26 +555,26 @@ Output:
 
 ## [Complete deployment of all containers with Docker Compose and usage](#docker-compose)
 
+* Ensure you are in the directory where the docker-compose.yml file is located --> `MLOPs_proj2/` directory (root folder).
+
 #### Create the network
 
-First, create the network AIService by running this command:
+* First, create the network AIService by running this command:
 
-```bash
-docker network create AIservice
-```
+    ```bash
+    docker network create AIservice
+    ```
 
-Next, create the local volumes to be referenced on the compose script:
+* Next, create the local volumes to be referenced on the compose script:
 
-```bash
-docker volume create frontend_log
-docker volume create app_log
-docker volume create knn_log
-```
+    ```bash
+    docker volume create frontend_log
+    docker volume create app_log
+    docker volume create knn_log
+    ```
 
 
 #### Run Docker Compose
-
-* Ensure you are in the directory where the docker-compose.yml file is located
 
 * Run the next command to start the App and Frontend APIs
 
