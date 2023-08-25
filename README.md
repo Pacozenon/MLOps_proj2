@@ -89,11 +89,15 @@ In other words, knowledge is integrated regarding the learning of good software 
 Links to experiments like notebooks
 You can find the Titanic experiments here:
 
-[1-exploring-data.ipynb] (https://www.kaggle.com/code/nehahatti/online-payments-fraud-detection-project)
+[1-exploring-data.ipynb](https://www.kaggle.com/code/nehahatti/online-payments-fraud-detection-project)
+
 [2-organizing-ideas.ipynb](https://github.com/Pacozenon/MLOps_project/blob/main/1-Baseline/online-payments-fraud-detection-project.ipynb)
-[3-create-convenient-classes.ipynb] (C:\Users\francisco.torres\Documents\GitHub\MLOps_proj2\docs\classes_pipeline.ipynb)
-[4_creating_pipeline.ipynb] ()
-[5_refactored_fraud_detection.ipynb] (https://github.com/Pacozenon/MLOps_project/tree/main/Refactor/mlops_project/mlops_project)
+
+[3-create-convenient-classes.ipynb](https://github.com/Pacozenon/MLOps_proj2/blob/main/docs/classes_pipeline.ipynb)
+
+[4_creating_pipeline.ipynb](https://github.com/Pacozenon/MLOps_proj2/blob/main/docs/classes_pipeline.ipynb)
+
+[5_refactored_fraud_detection.ipynb](https://github.com/Pacozenon/MLOps_project/tree/main/Refactor/mlops_project/mlops_project)
 
 
 
