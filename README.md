@@ -88,7 +88,7 @@ In other words, knowledge is integrated regarding the learning of good software 
 
 ### [Links to experiments like notebooks](#links_notebooks)
 
-You can find the Titanic experiments here:
+You can find the Online Detection fraud experiments here:
 
 [1-exploring-data.ipynb](https://www.kaggle.com/code/nehahatti/online-payments-fraud-detection-project)
 
